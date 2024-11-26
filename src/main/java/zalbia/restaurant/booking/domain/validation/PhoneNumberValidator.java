@@ -1,4 +1,4 @@
-package zalbia.restaurant.booking.rest.api.v1;
+package zalbia.restaurant.booking.domain.validation;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import jakarta.validation.ConstraintValidator;

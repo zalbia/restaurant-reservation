@@ -2,23 +2,29 @@ package zalbia.restaurant.booking.rest.api.v1;
 
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import zalbia.restaurant.booking.domain.CustomerBookingService;
 import zalbia.restaurant.booking.domain.Reservation;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1.0")
+@ComponentScan(basePackages = "zalbia.restaurant.booking.domain")
 public class CustomerBookingController {
+    @Autowired
+    private CustomerBookingService customerBookingService;
 
     /**
      * Book a reservation by providing my name, phone number, email, reservation date and time, and number of guests.
      * The system should confirm my reservation and notify me through my preferred method of communication (i.e. SMS, Email).
      */
     @PostMapping("/reservations")
-    public ReservationCreated bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
+    public Reservation bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
         throw new NotImplementedException("Not yet implemented");
     }
 
@@ -45,7 +51,7 @@ public class CustomerBookingController {
     @PutMapping("/reservations/{reservationId}")
     public Reservation updateReservation(
             @PathVariable Long reservationId,
-            @RequestBody UpdateBookingRequest updateRequest
+            @Valid @RequestBody UpdateBookingRequest updateRequest
     ) {
         throw new NotImplementedException("Not yet implemented");
     }
