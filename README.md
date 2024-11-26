@@ -1,5 +1,12 @@
 # Restaurant Reservation System
 
+## TODO
+- Add more OpenAPI documentation
+- Implement services
+- Unit tests for validation
+- Integration Tests!
+- Implement quartz scheduler logic for reminder jobs
+
 ## Design Decisions
 
 - Top-down approach, define documented API then work way down.
@@ -23,11 +30,11 @@
 - Names can only be 1-100 characters long.
 - Local phone numbers are from the Philippines.
 - There can only be up to 8 guests per reservation per group reservation policy.
-- Reservations should be at least four hours into the future.
+- Reservations should be booked at least four hours ahead.
 - All dates and times are local.
 - There isn't a definite limit to the total number of reservations booked for a restaurant.
 
 ## Nice to have
 
-- Add discoverability (next, previous) to getting reservations
+- Add discoverability (next, previous, etc.) to getting paginated reservations
 - Consider "idempotency" of creating reservations, e.g. only allowing one reservation under one name per day. 
