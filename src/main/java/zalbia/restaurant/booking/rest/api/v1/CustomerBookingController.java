@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
@@ -29,10 +29,11 @@ public class CustomerBookingController {
     }
 
     @DeleteMapping("/reservations/{reservationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {
         // TODO: mark reservation cancelled
         // notify confirming cancellation
-        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
+        throw new NotImplementedException("Not yet implemented");
     }
 
     @GetMapping("/reservations")
