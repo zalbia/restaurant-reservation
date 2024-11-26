@@ -1,4 +1,4 @@
-package zalbia.restaurant.reservation.model;
+package zalbia.restaurant.booking.domain;
 
 public enum CommunicationMethod {
     EMAIL,
