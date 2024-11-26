@@ -1,11 +1,11 @@
-package zalbia.restaurant.reservation.rest.api.v1;
+package zalbia.restaurant.booking.rest.api.v1;
 
 import jakarta.validation.constraints.*;
-import zalbia.restaurant.reservation.model.CommunicationMethod;
+import zalbia.restaurant.booking.domain.CommunicationMethod;
 
 import java.time.LocalDateTime;
 
-public record CreateReservationRequest(
+public record BookReservationRequest(
         @NotNull
         @NotEmpty
         @Size(min = 1, max = 100)
