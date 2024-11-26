@@ -1,4 +1,4 @@
-package zalbia.restaurant.booking.rest.api.v1;
+package zalbia.restaurant.booking.domain.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
