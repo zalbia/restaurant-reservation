@@ -14,8 +14,11 @@ import java.util.stream.Collectors;
 @Component
 public class ReservationFactory {
 
-    @Autowired
     private Validator validator;
+
+    public ReservationFactory(Validator validator) {
+        this.validator = validator;
+    }
 
     /**
      * Creates a new reservation. Throws a {@link ReservationValidationException} for invalid reservations.
