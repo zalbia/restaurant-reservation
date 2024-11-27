@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.OptionalLong;
 
 @Service
 public class CustomerBookingService {
@@ -12,7 +13,8 @@ public class CustomerBookingService {
     @Autowired
     ReservationFactory reservationFactory;
 
-    public Reservation createReservation(
+    public Reservation bookReservation(
+            OptionalLong guestId,
             String name,
             String phoneNumber,
             String email,
