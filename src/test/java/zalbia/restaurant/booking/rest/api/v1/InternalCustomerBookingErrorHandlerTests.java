@@ -1,19 +1,14 @@
 package zalbia.restaurant.booking.rest.api.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
@@ -21,35 +16,13 @@ import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuests
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.OptionalLong;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CustomerBookingController.class)
-public class InternalCustomerBookingErrorHandlerTests {
-
-    private static BookReservationRequest bookReservationRequest;
-
-    @BeforeAll
-    public static void beforeAll() {
-        bookReservationRequest = new BookReservationRequest(
-                OptionalLong.empty(),
-                "Customer",
-                "+639170000000",
-                "customer@example.com",
-                LocalDateTime.now().plusHours(4),
-                1,
-                CommunicationMethod.EMAIL
-        );
-    }
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;
+public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixture {
 
     @Mock
     @MockitoBean
@@ -63,7 +36,7 @@ public class InternalCustomerBookingErrorHandlerTests {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookReservationRequest)))
+                        .content(objectMapper.writeValueAsString(validBookReservationRequest)))
                 .andExpect(status().isInternalServerError());
     }
 
@@ -78,7 +51,7 @@ public class InternalCustomerBookingErrorHandlerTests {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookReservationRequest)))
+                        .content(objectMapper.writeValueAsString(validBookReservationRequest)))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string(Matchers.containsString(String.valueOf(reservationId))))
                 .andExpect(content().string(Matchers.containsString(past.toString())));
@@ -95,7 +68,7 @@ public class InternalCustomerBookingErrorHandlerTests {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookReservationRequest)))
+                        .content(objectMapper.writeValueAsString(validBookReservationRequest)))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string(Matchers.containsString(String.valueOf(reservationId))))
                 .andExpect(content().string(Matchers.containsString(String.valueOf(invalidNumberOfGuests))));
