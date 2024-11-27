@@ -4,7 +4,6 @@
 
 - Add more OpenAPI documentation
 - Implement services
-- Unit tests for validation
 - Integration Tests!
 - Implement quartz scheduler logic for reminder jobs
 
@@ -29,7 +28,8 @@
   reservations instead of managing a guest entity.
   - In a bigger system, guest IDs would just be provided.
 - Limited logging only for client-friendly error messages for the API, and appropriate response status codes.
-- Create an exception hierarchy for customer booking.
+- Created an exception hierarchy for internal customer booking errors.
+  - These runtime errors are allowed to bubble up to the web layer and handled accordingly.
 
 ## Assumptions Made
 
