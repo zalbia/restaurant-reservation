@@ -1,12 +1,17 @@
 package zalbia.restaurant.booking.rest.api.v1;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
@@ -28,6 +33,22 @@ public class CustomerBookingController {
 
     @Operation(summary = "Book a reservation with a name, phone number, email, reservation date and time, number of " +
             "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be sent.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reservation booked"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid reservation booking with validation errors",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal error",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
+            )
+    })
     @PostMapping("/")
     public Reservation bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
         return customerBookingService.bookReservation(reservationRequest.toParams());
