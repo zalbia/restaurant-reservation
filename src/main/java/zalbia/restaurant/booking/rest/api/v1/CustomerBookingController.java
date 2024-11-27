@@ -27,6 +27,7 @@ import java.util.List;
 )
 @RequestMapping("/api/v1.0/reservations")
 @ComponentScan(basePackages = "zalbia.restaurant.booking.domain")
+@ComponentScan(basePackages = "zalbia.restaurant.booking.infra")
 public class CustomerBookingController {
     @Autowired
     private CustomerBookingService customerBookingService;

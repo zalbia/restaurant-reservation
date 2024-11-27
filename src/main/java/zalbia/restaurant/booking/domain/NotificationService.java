@@ -1,12 +1,20 @@
 package zalbia.restaurant.booking.domain;
 
-public interface NotificationService {
-    /**
-     * Sends a notification to a guest about their reservation.
-     *
-     * @param message
-     * @param reservation the reservation
-     * @throws SendNotificationException if sending fails.
-     */
-    public void sendNotification(String message, Reservation reservation);
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class NotificationService {
+    @Autowired
+    SmsService smsService;
+
+    @Autowired
+    EmailService emailService;
+
+    public void sendNotification(String message, CommunicationMethod preferredCommunicationMethod) {
+        switch (preferredCommunicationMethod) {
+            case CommunicationMethod.SMS -> smsService.send(message);
+            case CommunicationMethod.EMAIL -> emailService.send(message);
+        }
+    }
 }
