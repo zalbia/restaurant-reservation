@@ -3,8 +3,6 @@ package zalbia.restaurant.booking.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import zalbia.restaurant.booking.domain.internal.Reservation;
-import zalbia.restaurant.booking.domain.internal.ReservationFactory;
 
 @Service
 public class CustomerBookingServiceImpl implements CustomerBookingService {
@@ -13,13 +11,22 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     private ReservationRepository reservationRepository;
 
     @Autowired
-    private ReservationFactory reservationFactory;
+    private ReservationValidator reservationValidator;
 
     @Autowired
     private NotificationService notificationService;
 
     @Transactional
     public Reservation bookReservation(BookReservationParams params) {
+        reservationValidator.validateNewReservation(
+                params.name(),
+                params.phoneNumber(),
+                params.email(),
+                params.reservationDateTime(),
+                params.numberOfGuests(),
+                params.preferredCommunicationMethod()
+        );
+        // this should really be a returning * query
         int reservationId = reservationRepository.bookReservation(
                 params.name(),
                 params.phoneNumber(),

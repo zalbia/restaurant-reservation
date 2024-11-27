@@ -1,7 +1,5 @@
 package zalbia.restaurant.booking.domain;
 
-import zalbia.restaurant.booking.domain.internal.Reservation;
-
 public interface NotificationService {
     /**
      * Sends a notification to a guest about their reservation.

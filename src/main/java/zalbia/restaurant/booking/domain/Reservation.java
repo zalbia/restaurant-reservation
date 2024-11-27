@@ -1,8 +1,7 @@
-package zalbia.restaurant.booking.domain.internal;
+package zalbia.restaurant.booking.domain;
 
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
-import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.validation.*;
 
 import java.time.LocalDateTime;
@@ -40,7 +39,7 @@ public final class Reservation {
     // Can be cancelled.
     private boolean isCancelled;
 
-    // Reservations can only be created by the ReservationFactory
+    // Reservations can only be created within this package
     Reservation(
             Long id,
             Long guestId,
