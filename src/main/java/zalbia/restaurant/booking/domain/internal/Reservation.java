@@ -1,9 +1,8 @@
-package zalbia.restaurant.booking.domain;
+package zalbia.restaurant.booking.domain.internal;
 
 import jakarta.validation.constraints.*;
-import zalbia.restaurant.booking.domain.validation.InvalidNumberOfGuestsUpdateException;
-import zalbia.restaurant.booking.domain.validation.ReservationUpdateToPastException;
-import zalbia.restaurant.booking.domain.validation.PhoneNumber;
+import zalbia.restaurant.booking.domain.CommunicationMethod;
+import zalbia.restaurant.booking.domain.validation.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -39,6 +38,7 @@ public final class Reservation {
     // Can be cancelled.
     private boolean isCancelled;
 
+    // Reservations can only be created by the ReservationFactory
     Reservation(
             Long id,
             Long guestId,
@@ -95,14 +95,14 @@ public final class Reservation {
     /**
      * Updates a reservation to a new future date and time.
      *
-     * @throws ReservationUpdateToPastException if newReservationDateTime is missing or not in the future
+     * @throws UpdateReservationToPastException if newReservationDateTime is missing or not in the future
      */
     public void updateReservationDateTime(@NotNull LocalDateTime newReservationDateTime) {
         if (newReservationDateTime == null) {
-            throw new ReservationUpdateToPastException(newReservationDateTime, "A new reservation date time is required.");
+            throw new UpdateReservationToPastException(id, newReservationDateTime, "A new reservation date time is required.");
         }
         if (newReservationDateTime.isBefore(LocalDateTime.now())) {
-            throw new ReservationUpdateToPastException(newReservationDateTime,
+            throw new UpdateReservationToPastException(id, newReservationDateTime,
                     "Reservation must be in the future. Got " + newReservationDateTime + ".");
         }
         this.reservationDateTime = newReservationDateTime;
@@ -111,13 +111,13 @@ public final class Reservation {
     /**
      * Updates a reservation to a new number of guests.
      *
-     * @throws InvalidNumberOfGuestsUpdateException if the numberOfGuests is not between 1 and 8
+     * @throws UpdateToInvalidNumberOfGuestsException if the numberOfGuests is not between 1 and 8
      */
     public void updateNumberOfGuests(int numberOfGuests) {
         if (numberOfGuests < 1) {
-            throw new InvalidNumberOfGuestsUpdateException(numberOfGuests, "Number of guests must be at least 1");
+            throw new UpdateToInvalidNumberOfGuestsException(id, numberOfGuests, "Number of guests must be at least 1");
         } else if (numberOfGuests > 8) {
-            throw new InvalidNumberOfGuestsUpdateException(numberOfGuests, "Number of guests cannot exceed 8");
+            throw new UpdateToInvalidNumberOfGuestsException(id, numberOfGuests, "Number of guests cannot exceed 8");
         }
         this.numberOfGuests = numberOfGuests;
     }

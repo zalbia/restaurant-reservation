@@ -1,10 +1,11 @@
-package zalbia.restaurant.booking.domain;
+package zalbia.restaurant.booking.domain.internal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import zalbia.restaurant.booking.domain.validation.InvalidNumberOfGuestsUpdateException;
-import zalbia.restaurant.booking.domain.validation.ReservationUpdateToPastException;
+import zalbia.restaurant.booking.domain.CommunicationMethod;
+import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
+import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
 
 import java.time.LocalDateTime;
 
@@ -54,7 +55,7 @@ public class ReservationTests {
     public void rejectsUpdateToPastTime() {
         final LocalDateTime pastReservationTime = LocalDateTime.now().minusHours(3);
 
-        assertThrows(ReservationUpdateToPastException.class, () ->
+        assertThrows(UpdateReservationToPastException.class, () ->
                 reservation.updateReservationDateTime(pastReservationTime)
         );
     }
@@ -62,12 +63,12 @@ public class ReservationTests {
     @Test
     @DisplayName("Rejects updating to invalid number of guests")
     public void rejectsUpdateToInvalidNumberOfGuests() {
-        assertThrows(InvalidNumberOfGuestsUpdateException.class, () -> {
+        assertThrows(UpdateToInvalidNumberOfGuestsException.class, () -> {
             final int newNumberOfGuests = 0;
             reservation.updateNumberOfGuests(newNumberOfGuests);
         });
 
-        assertThrows(InvalidNumberOfGuestsUpdateException.class, () -> {
+        assertThrows(UpdateToInvalidNumberOfGuestsException.class, () -> {
             final int newNumberOfGuests = 9;
             reservation.updateNumberOfGuests(newNumberOfGuests);
         });

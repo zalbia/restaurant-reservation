@@ -17,7 +17,7 @@
     - JPA often provides an overly leaky abstraction over the rich data access API SQL
       already provides, making it awkward, if not difficult, to make full use of the unique set of features a specific
       database vendor offers.
-    - Tradeoff is finer control but having to map data manually.
+    - Tradeoff is finer control but having to do ORM manually.
 - Support phone number validation using [libphonenumber](https://github.com/google/libphonenumber).
     - Phone numbers form a complex domain, and rolling out own validation is unnecessary.
     - Delegating to the library leads to a more forgiving phone number API argument.
@@ -29,6 +29,7 @@
   reservations instead of managing a guest entity.
   - In a bigger system, guest IDs would just be provided.
 - Limited logging only for client-friendly error messages for the API, and appropriate response status codes.
+- Create an exception hierarchy for customer booking.
 
 ## Assumptions Made
 
