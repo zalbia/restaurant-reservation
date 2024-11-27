@@ -37,8 +37,6 @@ public class CustomerBookingController {
     @DeleteMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {
-        // TODO: mark reservation cancelled
-        // notify confirming cancellation
         throw new NotImplementedException("Not yet implemented");
     }
 
