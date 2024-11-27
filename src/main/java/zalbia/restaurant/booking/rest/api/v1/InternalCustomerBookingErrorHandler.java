@@ -13,7 +13,7 @@ import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuests
  * Provides API layer error handling for internal errors in customer booking.
  */
 @RestControllerAdvice
-public class CustomerBookingExceptionHandler {
+public class InternalCustomerBookingErrorHandler {
     private static final String PREFIX = "An internal error occurred while ";
 
     @ExceptionHandler(ReservationValidationException.class)

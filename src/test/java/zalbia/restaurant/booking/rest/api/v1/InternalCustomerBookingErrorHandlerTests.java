@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CustomerBookingController.class)
-public class CustomerBookingExceptionHandlerTests {
+public class InternalCustomerBookingErrorHandlerTests {
 
     private static BookReservationRequest bookReservationRequest;
 
