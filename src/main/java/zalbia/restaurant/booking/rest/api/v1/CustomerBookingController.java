@@ -18,7 +18,7 @@ import java.util.List;
 @Tag(
         name = "Customer Booking Endpoint",
         description = "Allows customers to book reservations at a restaurant and manage them. Confirmations are sent " +
-                "via email or SMS per customer preference."
+                "via email or SMS notifications per customer preference."
 )
 @RequestMapping("/api/v1.0/reservations")
 @ComponentScan(basePackages = "zalbia.restaurant.booking.domain")
@@ -27,7 +27,8 @@ public class CustomerBookingController {
     private CustomerBookingService customerBookingService;
 
     @Operation(summary = "Book a reservation with a name, phone number, email, reservation date and time, number of " +
-            "guests, and a preferred way to get a confirmation. An email or SMS confirmation will be sent.")
+            "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be " +
+            "sent.")
     @PostMapping("/")
     public Reservation bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
         return customerBookingService.bookReservation(
@@ -41,7 +42,8 @@ public class CustomerBookingController {
         );
     }
 
-    @Operation(summary = "Cancels a reservation given a reservation ID. An email or SMS confirmation will be sent.")
+    @Operation(summary = "Cancels a reservation given a reservation ID. A notification confirming the cancellation" +
+            "will be sent.")
     @DeleteMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {
