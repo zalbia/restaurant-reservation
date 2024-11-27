@@ -30,7 +30,15 @@ public class CustomerBookingController {
             "guests, and a preferred way to get a confirmation. An email or SMS confirmation will be sent.")
     @PostMapping("/")
     public Reservation bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
-        throw new NotImplementedException("Not yet implemented");
+        return customerBookingService.bookReservation(
+                reservationRequest.guestId(),
+                reservationRequest.name(),
+                reservationRequest.phoneNumber(),
+                reservationRequest.email(),
+                reservationRequest.reservationDateTime(),
+                reservationRequest.numberOfGuests(),
+                reservationRequest.preferredCommunicationMethod()
+        );
     }
 
     @Operation(summary = "Cancels a reservation given a reservation ID. An email or SMS confirmation will be sent.")
