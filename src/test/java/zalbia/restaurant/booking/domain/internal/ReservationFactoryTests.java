@@ -3,7 +3,8 @@ package zalbia.restaurant.booking.domain.internal;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
@@ -16,14 +17,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ReservationFactoryTests {
 
-    ReservationFactory reservationFactory;
+    private static ReservationFactory reservationFactory;
+    private static ValidatorFactory validatorFactory;
 
-    @BeforeEach
-    public void beforeEach() {
-        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
-            Validator validator = factory.getValidator();
-            reservationFactory = new ReservationFactory(validator);
-        }
+    @BeforeAll
+    public static void beforeAll() {
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+        reservationFactory = new ReservationFactory(validator);
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        validatorFactory.close();
     }
 
     @Test
