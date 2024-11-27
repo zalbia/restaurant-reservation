@@ -27,8 +27,7 @@ public class CustomerBookingController {
     private CustomerBookingService customerBookingService;
 
     @Operation(summary = "Book a reservation with a name, phone number, email, reservation date and time, number of " +
-            "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be " +
-            "sent.")
+            "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be sent.")
     @PostMapping("/")
     public Reservation bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
         return customerBookingService.bookReservation(

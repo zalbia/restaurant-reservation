@@ -29,7 +29,7 @@ public class ReservationFactoryTests {
                         "customer@example.com",
                         LocalDateTime.now().plusHours(4),
                         1,
-                        CommunicationMethod.EMAIL
+                        CommunicationMethod.SMS
                 )
         );
     }

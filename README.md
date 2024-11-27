@@ -28,6 +28,7 @@
 - To keep scope in check for this assignment, booking reservations returns an auto-incremented guest ID for managing
   reservations instead of managing a guest entity.
   - In a bigger system, guest IDs would just be provided.
+- Limited logging only for client-friendly error messages for the API, and appropriate response status codes.
 
 ## Assumptions Made
 
@@ -36,6 +37,7 @@
 - There can only be up to 8 guests per reservation per group reservation policy.
 - All dates and times are local.
 - There isn't a definite limit to the total number of reservations booked for a restaurant.
+- Restaurant is open 24/7. 😱
 
 ## Nice to have
 

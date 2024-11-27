@@ -1,9 +1,9 @@
 package zalbia.restaurant.booking.domain.validation;
 
-public class InvalidNumberOfGuestsException extends RuntimeException {
+public class InvalidNumberOfGuestsUpdateException extends RuntimeException {
     private final int numberOfGuests;
 
-    public InvalidNumberOfGuestsException(int numberOfGuests, String message) {
+    public InvalidNumberOfGuestsUpdateException(int numberOfGuests, String message) {
         super(message);
         this.numberOfGuests = numberOfGuests;
     }
