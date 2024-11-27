@@ -12,7 +12,7 @@ public class CustomerBookingService {
     @Autowired
     ReservationFactory reservationFactory;
 
-    Reservation createReservation(
+    public Reservation createReservation(
             String name,
             String phoneNumber,
             String email,
