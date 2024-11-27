@@ -13,6 +13,7 @@ public final class Reservation {
     private final Long guestId;
 
     @NotNull
+    @NotBlank
     @Size(min = 1, max = 100)
     private final String name;
 
@@ -92,17 +93,17 @@ public final class Reservation {
     }
 
     /**
-     * Updates a reservation to a new date and time that has to be at least 4 hours ahead.
+     * Updates a reservation to a new future date and time.
      *
-     * @throws InvalidReservationDateTimeException if newReservationDateTime is missing or not at least 4 hours ahead
+     * @throws InvalidReservationDateTimeException if newReservationDateTime is missing or not in the future
      */
     public void setReservationDateTime(@NotNull LocalDateTime newReservationDateTime) {
         if (newReservationDateTime == null) {
             throw new InvalidReservationDateTimeException(newReservationDateTime, "A new reservation date time is required.");
         }
-        if (newReservationDateTime.isBefore(LocalDateTime.now().plusHours(4))) {
+        if (newReservationDateTime.isBefore(LocalDateTime.now())) {
             throw new InvalidReservationDateTimeException(newReservationDateTime,
-                    "Reservation must be at least 4 hours in the future. Got " + newReservationDateTime + ".");
+                    "Reservation must be in the future. Got " + newReservationDateTime + ".");
         }
         this.reservationDateTime = newReservationDateTime;
     }

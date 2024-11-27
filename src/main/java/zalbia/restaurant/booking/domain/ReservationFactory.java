@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
 import java.time.LocalDateTime;
-import java.util.OptionalLong;
 import java.util.Set;
 import java.util.stream.Collectors;
 

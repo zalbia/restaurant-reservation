@@ -1,4 +1,4 @@
-package zalbia.restaurant.reservation;
+package zalbia.restaurant.booking;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

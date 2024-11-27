@@ -14,10 +14,10 @@
 - Although this is just an assignment, REST APIs evolve different versions so I prepend an API version number to the
   URLs.
 - Spring Data JDBC over Spring Data JPA.
-    - JPA often provides an unnecessary abstraction over the rich data access API SQL
+    - JPA often provides an overly leaky abstraction over the rich data access API SQL
       already provides, making it awkward, if not difficult, to make full use of the unique set of features a specific
       database vendor offers.
-    - I have to do pagination myself.
+    - Tradeoff is finer control but having to map data manually.
 - Support phone number validation using [libphonenumber](https://github.com/google/libphonenumber).
     - Phone numbers form a complex domain, and rolling out own validation is unnecessary.
     - Delegating to the library leads to a more forgiving phone number API argument.
@@ -25,8 +25,9 @@
 - Use auto-incremented IDs in h2
     - Simple, suitable for a single node as is the case in this assignment.
 - Use Java 21 records to cut down on the amount of boilerplate for this assignment.
-- To keep scope in check for this assignment, booking reservations returns an auto-incremented guest ID for subsequent
-  use instead of managing a guest entity.
+- To keep scope in check for this assignment, booking reservations returns an auto-incremented guest ID for managing
+  reservations instead of managing a guest entity.
+  - In a bigger system, guest IDs would just be provided.
 
 ## Assumptions Made
 
