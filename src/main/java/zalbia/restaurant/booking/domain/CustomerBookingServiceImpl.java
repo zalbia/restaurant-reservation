@@ -36,7 +36,8 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
                 params.numberOfGuests()
         );
         Reservation reservation = reservationRepository.findById((long) reservationId).get();
-        notificationService.sendNotification("You have booked a reservation.", reservation);
+        notificationService.sendNotification("You have booked a reservation.",
+                reservation.preferredCommunicationMethod());
         return reservation;
     }
 }
