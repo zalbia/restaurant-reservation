@@ -1,12 +1,12 @@
 package zalbia.restaurant.booking.domain.internal;
 
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
-import zalbia.restaurant.booking.domain.ReservationRepository;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
 import java.time.LocalDateTime;
@@ -14,15 +14,17 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@WebMvcTest
 public class ReservationFactoryTests {
 
-    @Autowired
     ReservationFactory reservationFactory;
 
-    // needed to satisfy WebMvcTest context 💀
-    @MockitoBean
-    ReservationRepository reservationRepository;
+    @BeforeEach
+    public void beforeEach() {
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            Validator validator = factory.getValidator();
+            reservationFactory = new ReservationFactory(validator);
+        }
+    }
 
     @Test
     @DisplayName("Accepts a valid reservation")
