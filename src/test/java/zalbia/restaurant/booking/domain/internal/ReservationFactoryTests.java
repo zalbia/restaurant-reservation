@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
+import zalbia.restaurant.booking.domain.ReservationRepository;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
 import java.time.LocalDateTime;
@@ -17,6 +19,10 @@ public class ReservationFactoryTests {
 
     @Autowired
     ReservationFactory reservationFactory;
+
+    // needed to satisfy WebMvcTest context 💀
+    @MockitoBean
+    ReservationRepository reservationRepository;
 
     @Test
     @DisplayName("Accepts a valid reservation")

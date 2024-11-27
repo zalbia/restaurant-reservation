@@ -3,6 +3,7 @@
 ## TODO
 
 - Add more OpenAPI documentation
+- Add Javadoc
 - Implement services
 - Integration Tests!
 - Implement quartz scheduler logic for reminder jobs
