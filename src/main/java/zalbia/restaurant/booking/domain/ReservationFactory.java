@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
 import java.time.LocalDateTime;
+import java.util.OptionalLong;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ public class ReservationFactory {
 
     public Reservation createNewReservation(
             Long id,
+            Long guestId,
             String name,
             String phoneNumber,
             String email,
@@ -26,7 +28,15 @@ public class ReservationFactory {
             CommunicationMethod preferredCommunicationMethod
     ) {
         final Reservation reservation = new Reservation(
-                id, name, phoneNumber, email, reservationDateTime, numberOfGuests, preferredCommunicationMethod);
+                id,
+                guestId,
+                name,
+                phoneNumber,
+                email,
+                reservationDateTime,
+                numberOfGuests,
+                preferredCommunicationMethod
+        );
         Set<ConstraintViolation<Reservation>> violations = validator.validate(reservation);
         if (!violations.isEmpty()) {
             throw new ReservationValidationException(

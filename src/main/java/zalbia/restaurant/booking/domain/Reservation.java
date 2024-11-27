@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public final class Reservation {
     private final Long id;
+    private final Long guestId;
 
     @NotNull
     @Size(min = 1, max = 100)
@@ -29,7 +30,6 @@ public final class Reservation {
 
     @NotNull
     @Future
-    @Min(value = 4, message = "Reservation must be 4 hours ahead")
     private LocalDateTime reservationDateTime;
 
     @Min(value = 1, message = "Number of guests must be at least 1")
@@ -40,6 +40,7 @@ public final class Reservation {
 
     Reservation(
             Long id,
+            Long guestId,
             String name,
             String phoneNumber,
             String email,
@@ -48,6 +49,7 @@ public final class Reservation {
             CommunicationMethod preferredCommunicationMethod
     ) {
         this.id = id;
+        this.guestId = guestId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -59,6 +61,10 @@ public final class Reservation {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getGuestId() {
+        return guestId;
     }
 
     public String getName() {

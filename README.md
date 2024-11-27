@@ -1,6 +1,7 @@
 # Restaurant Reservation System
 
 ## TODO
+
 - Add more OpenAPI documentation
 - Implement services
 - Unit tests for validation
@@ -24,13 +25,14 @@
 - Use auto-incremented IDs in h2
     - Simple, suitable for a single node as is the case in this assignment.
 - Use Java 21 records to cut down on the amount of boilerplate for this assignment.
+- To keep scope in check for this assignment, booking reservations returns an auto-incremented guest ID for subsequent
+  use instead of managing a guest entity.
 
 ## Assumptions Made
 
 - Names can only be 1-100 characters long.
 - Local phone numbers are from the Philippines.
 - There can only be up to 8 guests per reservation per group reservation policy.
-- Reservations should be booked at least four hours ahead.
 - All dates and times are local.
 - There isn't a definite limit to the total number of reservations booked for a restaurant.
 

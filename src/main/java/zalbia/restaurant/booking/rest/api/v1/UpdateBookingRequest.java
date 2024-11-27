@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 public record UpdateBookingRequest(
         @NotNull
         @Future
-        @Min(value = 4, message = "New datetime must be at least 4 hours ahead")
         LocalDateTime newDateTime,
 
         @Min(value = 1, message = "New number of guests must be at least 1")

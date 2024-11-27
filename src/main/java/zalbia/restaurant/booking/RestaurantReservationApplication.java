@@ -8,9 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Customer Booking API",
-                version = "1.0",
-                description = "API for booking restaurant reservations"
+                title = "Restaurant Reservation API",
+                version = "1.0"
         )
 )
 @SpringBootApplication
