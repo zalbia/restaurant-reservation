@@ -1,6 +1,7 @@
 package zalbia.restaurant.booking.domain.internal;
 
 import jakarta.validation.constraints.*;
+import org.springframework.data.annotation.Id;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.validation.*;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public final class Reservation {
+    @Id
     private final Long id;
     private final Long guestId;
 

@@ -13,10 +13,8 @@
 - Although this is just an assignment, REST APIs evolve different versions so I prepend an API version number to the
   URLs.
 - Spring Data JDBC over Spring Data JPA.
-    - JPA often provides an overly leaky abstraction over the rich data access API SQL
-      already provides, making it awkward, if not difficult, to make full use of the unique set of features a specific
-      database vendor offers.
-    - Tradeoff is finer control but having to do ORM manually.
+    - I just find that JPA caching is dangerous and JPQL is unnecessary.
+    - I could have just used JPA here to be honest, but in general I find the cons outweigh the pros.
 - Support phone number validation using [libphonenumber](https://github.com/google/libphonenumber).
     - Phone numbers form a complex domain, and rolling out own validation is unnecessary.
     - Delegating to the library leads to a more forgiving phone number API argument.
@@ -26,10 +24,10 @@
 - Use Java 21 records to cut down on the amount of boilerplate for this assignment.
 - To keep scope in check for this assignment, booking reservations returns an auto-incremented guest ID for managing
   reservations instead of managing a guest entity.
-  - In a bigger system, guest IDs would just be provided.
+    - In a bigger system, guest IDs would just be provided.
 - Limited logging only for client-friendly error messages for the API, and appropriate response status codes.
 - Created an exception hierarchy for internal customer booking errors.
-  - These runtime errors are allowed to bubble up to the web layer and handled accordingly.
+    - These runtime errors are allowed to bubble up to the web layer and handled accordingly.
 
 ## Assumptions Made
 
