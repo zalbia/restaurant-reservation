@@ -1,4 +1,4 @@
-package zalbia.restaurant.booking.domain.internal;
+package zalbia.restaurant.booking.domain;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -7,8 +7,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import zalbia.restaurant.booking.domain.CommunicationMethod;
-import zalbia.restaurant.booking.domain.ReservationValidator;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
 import java.time.LocalDateTime;
