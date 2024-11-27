@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
-import zalbia.restaurant.booking.domain.Reservation;
+import zalbia.restaurant.booking.domain.internal.Reservation;
 
 import java.util.List;
 
