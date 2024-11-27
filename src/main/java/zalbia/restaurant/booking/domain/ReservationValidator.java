@@ -1,10 +1,8 @@
-package zalbia.restaurant.booking.domain.internal;
+package zalbia.restaurant.booking.domain;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
 import java.time.LocalDateTime;
@@ -12,25 +10,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class ReservationFactory {
+public class ReservationValidator {
 
-    private Validator validator;
+    private final Validator validator;
 
-    public ReservationFactory(Validator validator) {
+    public ReservationValidator(Validator validator) {
         this.validator = validator;
     }
 
     /**
-     * Creates a new reservation. Throws a {@link ReservationValidationException} for invalid reservations.
+     * Validates a new reservation. Throws a {@link ReservationValidationException} for invalid reservations.
      * Validation is performed by an auto-injected {@link Validator} dependency.
      * <p>
      * See {@link Reservation} for constraints.
      *
      * @throws ReservationValidationException if reservation arguments are invalid
      */
-    public Reservation createNewReservation(
-            Long id,
-            Long guestId,
+    public Reservation validateNewReservation(
             String name,
             String phoneNumber,
             String email,
@@ -39,8 +35,8 @@ public class ReservationFactory {
             CommunicationMethod preferredCommunicationMethod
     ) {
         final Reservation reservation = new Reservation(
-                id,
-                guestId,
+                -1L, // dummy value
+                -1L, // dummy value
                 name,
                 phoneNumber,
                 email,

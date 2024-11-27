@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
+import zalbia.restaurant.booking.domain.ReservationValidator;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
 import java.time.LocalDateTime;
@@ -15,16 +16,16 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ReservationFactoryTests {
+public class ReservationValidatorTests {
 
-    private static ReservationFactory reservationFactory;
+    private static ReservationValidator reservationFactory;
     private static ValidatorFactory validatorFactory;
 
     @BeforeAll
     public static void beforeAll() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
-        reservationFactory = new ReservationFactory(validator);
+        reservationFactory = new ReservationValidator(validator);
     }
 
     @AfterAll
@@ -36,9 +37,7 @@ public class ReservationFactoryTests {
     @DisplayName("Accepts a valid reservation")
     public void acceptsValidReservation() {
         assertDoesNotThrow(() ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         "Customer",
                         "+639160000000",
                         "customer@example.com",
@@ -53,9 +52,7 @@ public class ReservationFactoryTests {
     @DisplayName("Rejects invalid customer name")
     public void rejectsInvalidCustomerName() {
         assertThrows(ReservationValidationException.class, () ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         " ",
                         "+639160000000",
                         "customer@example.com",
@@ -66,9 +63,7 @@ public class ReservationFactoryTests {
         );
 
         assertThrows(ReservationValidationException.class, () ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         "",
                         "+639160000000",
                         "customer@example.com",
@@ -83,9 +78,7 @@ public class ReservationFactoryTests {
     @DisplayName("Rejects invalid phone number")
     public void rejectsInvalidPhoneNumber() {
         assertThrows(ReservationValidationException.class, () ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         "Customer",
                         "not a phone number",
                         "customer@example.com",
@@ -100,9 +93,7 @@ public class ReservationFactoryTests {
     @DisplayName("Rejects invalid email")
     public void rejectsInvalidEmail() {
         assertThrows(ReservationValidationException.class, () ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         "Customer",
                         "+639160000000",
                         "invalid email",
@@ -117,9 +108,7 @@ public class ReservationFactoryTests {
     @DisplayName("Rejects reservation datetime in the past")
     public void rejectsPastReservationDateTime() {
         assertThrows(ReservationValidationException.class, () ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         "Customer",
                         "+639160000000",
                         "customer@example.com",
@@ -134,9 +123,7 @@ public class ReservationFactoryTests {
     @DisplayName("Rejects invalid number of guests")
     public void rejectsInvalidNumberOfGuests() {
         assertThrows(ReservationValidationException.class, () ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         "Customer",
                         "+639160000000",
                         "customer@example.com",
@@ -147,9 +134,7 @@ public class ReservationFactoryTests {
         );
 
         assertThrows(ReservationValidationException.class, () ->
-                reservationFactory.createNewReservation(
-                        1L,
-                        1L,
+                reservationFactory.validateNewReservation(
                         "Customer",
                         "+639160000000",
                         "customer@example.com",

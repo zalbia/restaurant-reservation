@@ -5,7 +5,6 @@ import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import zalbia.restaurant.booking.domain.internal.Reservation;
 
 import java.time.LocalDateTime;
 

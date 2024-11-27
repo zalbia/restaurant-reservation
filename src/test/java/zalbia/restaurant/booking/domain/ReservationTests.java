@@ -1,9 +1,8 @@
-package zalbia.restaurant.booking.domain.internal;
+package zalbia.restaurant.booking.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
 
