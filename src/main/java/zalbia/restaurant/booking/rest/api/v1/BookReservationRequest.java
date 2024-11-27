@@ -1,6 +1,7 @@
 package zalbia.restaurant.booking.rest.api.v1;
 
 import jakarta.validation.constraints.*;
+import zalbia.restaurant.booking.domain.BookReservationParams;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.validation.PhoneNumber;
 
@@ -33,4 +34,15 @@ public record BookReservationRequest(
         @NotNull
         CommunicationMethod preferredCommunicationMethod
 ) {
+    public BookReservationParams toParams() {
+        return new BookReservationParams(
+                guestId,
+                name,
+                phoneNumber,
+                email,
+                reservationDateTime,
+                numberOfGuests,
+                preferredCommunicationMethod
+        );
+    }
 }

@@ -30,15 +30,7 @@ public class CustomerBookingController {
             "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be sent.")
     @PostMapping("/")
     public Reservation bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
-        return customerBookingService.bookReservation(
-                reservationRequest.guestId(),
-                reservationRequest.name(),
-                reservationRequest.phoneNumber(),
-                reservationRequest.email(),
-                reservationRequest.reservationDateTime(),
-                reservationRequest.numberOfGuests(),
-                reservationRequest.preferredCommunicationMethod()
-        );
+        return customerBookingService.bookReservation(reservationRequest.toParams());
     }
 
     @Operation(summary = "Cancels a reservation given a reservation ID. A notification confirming the cancellation" +
