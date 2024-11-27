@@ -13,8 +13,6 @@
 - Although this is just an assignment, REST APIs evolve different versions so I prepend an API version number to the
   URLs.
 - Spring Data JDBC over Spring Data JPA.
-    - I just find that JPA caching is dangerous and JPQL is unnecessary.
-    - I could have just used JPA here to be honest, but in general I find the cons outweigh the pros.
 - Support phone number validation using [libphonenumber](https://github.com/google/libphonenumber).
     - Phone numbers form a complex domain, and rolling out own validation is unnecessary.
     - Delegating to the library leads to a more forgiving phone number API argument.
