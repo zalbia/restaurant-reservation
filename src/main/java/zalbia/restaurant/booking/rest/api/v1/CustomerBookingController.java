@@ -32,7 +32,8 @@ public class CustomerBookingController {
     private CustomerBookingService customerBookingService;
 
     @Operation(summary = "Book a reservation with a name, phone number, email, reservation date and time, number of " +
-            "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be sent.")
+            "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be " +
+            "sent. Returning guests may specify a guestId to book a new reservation.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Reservation booked"),
             @ApiResponse(
