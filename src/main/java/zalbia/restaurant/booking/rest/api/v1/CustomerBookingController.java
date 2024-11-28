@@ -40,19 +40,16 @@ public class CustomerBookingController {
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid reservation booking",
-                    content = @Content(
-                            schema = @Schema(
-                                    example = """
-                                            {
-                                              "phoneNumber": "Invalid phone number",
-                                              "preferredCommunicationMethod": "must not be null",
-                                              "reservationDateTime": "must be a future date",
-                                              "name": "size must be between 1 and 100",
-                                              "numberOfGuests": "Number of guests must be at least 1",
-                                              "email": "must be a well-formed email address"
-                                            }"""
-                            )
-                    )
+                    content = @Content(schema = @Schema(example = """
+                            {
+                              "phoneNumber": "Invalid phone number",
+                              "preferredCommunicationMethod": "must not be null",
+                              "reservationDateTime": "must be a future date",
+                              "name": "size must be between 1 and 100",
+                              "numberOfGuests": "Number of guests must be at least 1",
+                              "email": "must be a well-formed email address"
+                            }"""
+                    ))
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -84,13 +81,13 @@ public class CustomerBookingController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        throw new NotImplementedException("Not yet implemented");
+        return customerBookingService.getReservationsPaginated(guestId, page, size);
     }
 
     @Operation(summary = "Fetches a single reservation by ID.")
     @GetMapping("/{reservationId}")
-    public Reservation getReservation(@PathVariable Long reservationId) {
-        throw new NotImplementedException("Not yet implemented");
+    public ResponseEntity<Reservation> getReservation(@PathVariable Long reservationId) {
+        return ResponseEntity.of(customerBookingService.findById(reservationId));
     }
 
     @Operation(summary = "Updates the time and number of guests for a reservation by ID.\n")

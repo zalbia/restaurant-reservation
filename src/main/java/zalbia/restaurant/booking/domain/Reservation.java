@@ -33,11 +33,14 @@ public final class Reservation {
     @Future
     private LocalDateTime reservationDateTime;
 
+    @NotNull
     @Min(value = 1, message = "Number of guests must be at least 1")
     @Max(value = 8, message = "Number of guests cannot exceed 8")
-    private int numberOfGuests;
+    private Integer numberOfGuests;
+
+    @NotNull
     // Can be cancelled.
-    private boolean isCancelled;
+    private Boolean isCancelled;
 
     // Reservations can only be created within this package
     Reservation(

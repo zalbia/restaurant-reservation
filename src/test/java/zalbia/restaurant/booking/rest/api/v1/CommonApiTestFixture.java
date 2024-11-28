@@ -6,8 +6,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.ReservationFixture;
 
-import java.util.OptionalLong;
-
 public abstract class CommonApiTestFixture extends ReservationFixture {
 
     protected static final String RESERVATIONS_URI = "/api/v1.0/reservations";
@@ -19,7 +17,7 @@ public abstract class CommonApiTestFixture extends ReservationFixture {
     protected MockMvc mockMvc;
 
     protected static ReservationBookingRequest validReservationBookingRequest = new ReservationBookingRequest(
-            OptionalLong.empty(),
+            null,
             "Customer",
             "+639170000000",
             "customer@example.com",

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zalbia.restaurant.booking.domain.validation.MissingReservationException;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CustomerBookingServiceImpl implements CustomerBookingService {
 
@@ -28,16 +31,25 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
                 params.numberOfGuests(),
                 params.preferredCommunicationMethod()
         );
-        // this should really be a returning * query
-        int reservationId = reservationRepository.bookReservation(
-                params.name(),
-                params.phoneNumber(),
-                params.email(),
-                params.preferredCommunicationMethod(),
-                params.reservationDateTime(),
-                params.numberOfGuests()
-        );
-        Reservation reservation = reservationRepository.findById((long) reservationId).get();
+        long reservationId = params.guestId() == null ?
+                reservationRepository.bookReservation(
+                        params.name(),
+                        params.phoneNumber(),
+                        params.email(),
+                        params.preferredCommunicationMethod(),
+                        params.reservationDateTime(),
+                        params.numberOfGuests()
+                ) :
+                reservationRepository.bookReservationForGuest(
+                        params.guestId(),
+                        params.name(),
+                        params.phoneNumber(),
+                        params.email(),
+                        params.preferredCommunicationMethod(),
+                        params.reservationDateTime(),
+                        params.numberOfGuests()
+                );
+        Reservation reservation = reservationRepository.findById(reservationId).get();
         notificationService.sendNotification("You have booked a reservation.",
                 reservation.getPreferredCommunicationMethod());
         return reservation;
@@ -54,5 +66,15 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
         }, () -> {
             throw new MissingReservationException(reservationId, "Reservation " + reservationId + " not found.");
         });
+    }
+
+    @Override
+    public List<Reservation> getReservationsPaginated(Long guestId, int page, int pageSize) {
+        return reservationRepository.getReservationsPaginated(guestId, pageSize, page * pageSize);
+    }
+
+    @Override
+    public Optional<Reservation> findById(Long reservationId) {
+        return reservationRepository.findById(reservationId);
     }
 }

@@ -6,10 +6,9 @@ import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.validation.PhoneNumber;
 
 import java.time.LocalDateTime;
-import java.util.OptionalLong;
 
 public record ReservationBookingRequest(
-        OptionalLong guestId,
+        Long guestId,
 
         @NotNull
         @Size(min = 1, max = 100)
@@ -27,9 +26,10 @@ public record ReservationBookingRequest(
         @Future
         LocalDateTime reservationDateTime,
 
+        @NotNull
         @Min(value = 1, message = "Number of guests must be at least 1")
         @Max(value = 8, message = "Number of guests cannot exceed 8")
-        int numberOfGuests,
+        Integer numberOfGuests,
 
         @NotNull
         CommunicationMethod preferredCommunicationMethod

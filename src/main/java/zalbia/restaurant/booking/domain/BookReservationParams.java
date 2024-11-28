@@ -1,10 +1,9 @@
 package zalbia.restaurant.booking.domain;
 
 import java.time.LocalDateTime;
-import java.util.OptionalLong;
 
 public record BookReservationParams(
-        OptionalLong guestId,
+        Long guestId,
         String name,
         String phoneNumber,
         String email,
