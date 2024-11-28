@@ -67,8 +67,11 @@ public class CustomerBookingController {
 
     @Operation(summary = "Cancels a reservation given a reservation ID. A notification confirming the cancellation" +
             "will be sent.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Reservation deleted"),
+            @ApiResponse(responseCode = "404", description = "No reservation deleted, reservation not found")
+    })
     @DeleteMapping("/{reservationId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {
         customerBookingService.cancelReservation(reservationId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
