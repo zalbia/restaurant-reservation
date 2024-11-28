@@ -39,10 +39,19 @@ public class CustomerBookingController {
             @ApiResponse(responseCode = "200", description = "Reservation booked"),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Invalid reservation booking with validation errors",
+                    description = "Invalid reservation booking",
                     content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(
+                                    example = """
+                                            {
+                                              "phoneNumber": "Invalid phone number",
+                                              "preferredCommunicationMethod": "must not be null",
+                                              "reservationDateTime": "must be a future date",
+                                              "name": "size must be between 1 and 100",
+                                              "numberOfGuests": "Number of guests must be at least 1",
+                                              "email": "must be a well-formed email address"
+                                            }"""
+                            )
                     )
             ),
             @ApiResponse(
@@ -51,7 +60,7 @@ public class CustomerBookingController {
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             )
     })
-    @PostMapping("")
+    @PostMapping(value = "", produces = "application/json")
     public Reservation bookReservation(@Valid @RequestBody ReservationBookingRequest request) {
         return customerBookingService.bookReservation(request.toParams());
     }
