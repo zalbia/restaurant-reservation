@@ -28,8 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
-    private static final String BOOKING_PREFIX = "/api/v1.0/reservations/";
-
     @MockitoBean
     SmsService smsService;
 
@@ -51,7 +49,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         );
 
         MvcResult result =
-                mockMvc.perform(MockMvcRequestBuilders.post(BOOKING_PREFIX)
+                mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(invalidRequest)))
                         .andExpect(status().is4xxClientError())
@@ -79,7 +77,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         String requestAsJson = objectMapper.writeValueAsString(validReservationBookingRequest);
         String expectedJson = objectMapper.writeValueAsString(validReservation);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(BOOKING_PREFIX)
+        mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestAsJson))
                 .andExpect(status().is2xxSuccessful())
