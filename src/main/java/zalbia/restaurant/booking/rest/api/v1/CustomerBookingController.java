@@ -70,7 +70,8 @@ public class CustomerBookingController {
     @DeleteMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {
-        throw new NotImplementedException("Not yet implemented");
+        customerBookingService.cancelReservation(reservationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Fetches a paginated list of all upcoming reservations for a guest.")

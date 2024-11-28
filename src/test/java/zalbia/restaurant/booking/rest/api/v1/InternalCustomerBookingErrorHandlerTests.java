@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
+import zalbia.restaurant.booking.domain.validation.MissingReservationException;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
 import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,5 +73,17 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string(Matchers.containsString(String.valueOf(reservationId))))
                 .andExpect(content().string(Matchers.containsString(String.valueOf(invalidNumberOfGuests))));
+    }
+
+    @Test
+    @DisplayName("Cancelling a missing reservation bubbles up as a 404")
+    public void testCancellingMissingReservation() throws Exception {
+        long missingReservationId = 404;
+
+        Mockito.doThrow(new MissingReservationException(missingReservationId, "oh no "))
+                .when(customerBookingService).cancelReservation(anyLong());
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(RESERVATIONS_URI + "/" + missingReservationId))
+                .andExpect(status().isNotFound());
     }
 }
