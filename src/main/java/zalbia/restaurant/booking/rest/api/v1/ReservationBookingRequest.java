@@ -8,7 +8,7 @@ import zalbia.restaurant.booking.domain.validation.PhoneNumber;
 import java.time.LocalDateTime;
 import java.util.OptionalLong;
 
-public record BookReservationRequest(
+public record ReservationBookingRequest(
         OptionalLong guestId,
 
         @NotNull
