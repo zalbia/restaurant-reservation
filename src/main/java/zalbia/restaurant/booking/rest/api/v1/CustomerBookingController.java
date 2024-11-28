@@ -51,7 +51,7 @@ public class CustomerBookingController {
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             )
     })
-    @PostMapping("/")
+    @PostMapping("")
     public Reservation bookReservation(@Valid @RequestBody ReservationBookingRequest request) {
         return customerBookingService.bookReservation(request.toParams());
     }
@@ -65,7 +65,7 @@ public class CustomerBookingController {
     }
 
     @Operation(summary = "Fetches a paginated list of all upcoming reservations for a guest.")
-    @GetMapping("/")
+    @GetMapping("")
     public List<Reservation> getReservationsPaginated(
             @RequestParam Long guestId,
             @RequestParam(defaultValue = "0") int page,

@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CustomerBookingController.class)
 public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixture {
-
     @Mock
     @MockitoBean
     private CustomerBookingService customerBookingService;
@@ -34,7 +33,7 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
         Mockito.when(customerBookingService.bookReservation(any()))
                 .thenThrow(new ReservationValidationException("oh no"));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
+        mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validReservationBookingRequest)))
                 .andExpect(status().isInternalServerError());
@@ -49,7 +48,7 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
         Mockito.when(customerBookingService.bookReservation(any()))
                 .thenThrow(new UpdateReservationToPastException(reservationId, past, "oh no"));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
+        mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validReservationBookingRequest)))
                 .andExpect(status().isInternalServerError())
@@ -66,7 +65,7 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
         Mockito.when(customerBookingService.bookReservation(any()))
                 .thenThrow(new UpdateToInvalidNumberOfGuestsException(reservationId, invalidNumberOfGuests, "oh no"));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
+        mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validReservationBookingRequest)))
                 .andExpect(status().isInternalServerError())

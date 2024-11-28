@@ -10,6 +10,8 @@ import java.util.OptionalLong;
 
 public abstract class CommonApiTestFixture extends ReservationFixture {
 
+    protected static final String RESERVATIONS_URI = "/api/v1.0/reservations";
+
     @Autowired
     protected ObjectMapper objectMapper;
 
