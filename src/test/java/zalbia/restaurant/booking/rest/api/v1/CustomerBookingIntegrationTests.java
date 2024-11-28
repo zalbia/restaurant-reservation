@@ -5,10 +5,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import zalbia.restaurant.booking.domain.EmailService;
 import zalbia.restaurant.booking.domain.SmsService;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Map;
+import java.util.OptionalLong;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -29,14 +37,37 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     EmailService emailService;
 
     @Test
-    @DisplayName("Invalid reservation booking requests get back bad request with errors")
+    @DisplayName("Responds to invalid reservation booking requests with bad request with field errors")
     @Order(1)
     public void rejectsInvalidReservationBookingRequests() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(BOOKING_PREFIX)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("Not JSON"))
-                .andExpect(status().is4xxClientError());
+        ReservationBookingRequest invalidRequest = new ReservationBookingRequest(
+                OptionalLong.of(1L),
+                "",
+                "not a phone number",
+                "not an email",
+                LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.UTC),
+                0,
+                null
+        );
 
+        MvcResult result =
+                mockMvc.perform(MockMvcRequestBuilders.post(BOOKING_PREFIX)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(invalidRequest)))
+                        .andExpect(status().is4xxClientError())
+                        .andReturn();
+        Map<String, String> fieldErrors = objectMapper.readValue(result.getResponse().getContentAsString(), Map.class);
+
+        Set<String> expectedKeys = Set.of(
+                "name",
+                "phoneNumber",
+                "email",
+                "reservationDateTime",
+                "numberOfGuests",
+                "preferredCommunicationMethod"
+        );
+
+        assertEquals(expectedKeys, fieldErrors.keySet());
         verifyNoInteractions(emailService);
         verifyNoInteractions(smsService);
     }
