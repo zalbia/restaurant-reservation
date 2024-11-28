@@ -11,22 +11,22 @@
 ## Design Decisions
 
 - Top-down approach, define documented API then work way down.
-- Although this is just an assignment, REST APIs evolve different versions so I prepend an API version number to the
+- Although this is just an assignment, REST APIs evolve different versions, so I prepend an API version number to the
   URLs.
-- Spring Data JDBC over Spring Data JPA.
+- Spring Data JDBC over Spring Data JPA for simplicity.
 - Support phone number validation using [libphonenumber](https://github.com/google/libphonenumber).
     - Phone numbers form a complex domain, and rolling out own validation is unnecessary.
     - Delegating to the library leads to a more forgiving phone number API argument.
 - Distinct validations at the API layer and domain layer.
 - Use auto-incremented IDs in h2
     - Simple, suitable for a single node as is the case in this assignment.
-- Use Java 21 records to cut down on the amount of boilerplate for this assignment.
-- To keep scope in check for this assignment, booking reservations returns an auto-incremented guest ID for managing
-  reservations instead of managing a guest entity.
-    - In a bigger system, guest IDs would just be provided.
-- Limited logging only for client-friendly error messages for the API, and appropriate response status codes.
+- Use Java 21 records to cut down on the amount of boilerplate.
+- To keep scope in check, booking reservations returns an auto-incremented guest ID for managing reservations instead of
+  managing a guest entity.
+    - In a production system, guest IDs would just be provided and would be some sort of UUID.
 - Created an exception hierarchy for internal customer booking errors.
-    - These runtime errors are allowed to bubble up to the web layer and handled accordingly.
+    - These runtime errors are allowed to bubble up to the web layer and handled by returning appropriate HTTP
+      responses.
 
 ## Assumptions Made
 

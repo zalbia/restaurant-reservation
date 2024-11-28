@@ -9,9 +9,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
-import zalbia.restaurant.booking.domain.EmailService;
+import zalbia.restaurant.booking.infra.EmailService;
 import zalbia.restaurant.booking.domain.Reservation;
-import zalbia.restaurant.booking.domain.SmsService;
+import zalbia.restaurant.booking.infra.SmsService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

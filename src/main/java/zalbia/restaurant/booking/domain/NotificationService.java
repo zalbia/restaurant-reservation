@@ -2,6 +2,8 @@ package zalbia.restaurant.booking.domain;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import zalbia.restaurant.booking.infra.EmailService;
+import zalbia.restaurant.booking.infra.SmsService;
 
 @Component
 public class NotificationService {
