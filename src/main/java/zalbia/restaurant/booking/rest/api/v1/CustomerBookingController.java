@@ -52,8 +52,8 @@ public class CustomerBookingController {
             )
     })
     @PostMapping("/")
-    public Reservation bookReservation(@Valid @RequestBody BookReservationRequest reservationRequest) {
-        return customerBookingService.bookReservation(reservationRequest.toParams());
+    public Reservation bookReservation(@Valid @RequestBody ReservationBookingRequest request) {
+        return customerBookingService.bookReservation(request.toParams());
     }
 
     @Operation(summary = "Cancels a reservation given a reservation ID. A notification confirming the cancellation" +

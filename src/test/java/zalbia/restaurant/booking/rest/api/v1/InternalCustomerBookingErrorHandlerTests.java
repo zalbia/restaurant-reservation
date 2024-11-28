@@ -36,7 +36,7 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validBookReservationRequest)))
+                        .content(objectMapper.writeValueAsString(validReservationBookingRequest)))
                 .andExpect(status().isInternalServerError());
     }
 
@@ -51,7 +51,7 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validBookReservationRequest)))
+                        .content(objectMapper.writeValueAsString(validReservationBookingRequest)))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string(Matchers.containsString(String.valueOf(reservationId))))
                 .andExpect(content().string(Matchers.containsString(past.toString())));
@@ -68,7 +68,7 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1.0/reservations/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validBookReservationRequest)))
+                        .content(objectMapper.writeValueAsString(validReservationBookingRequest)))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string(Matchers.containsString(String.valueOf(reservationId))))
                 .andExpect(content().string(Matchers.containsString(String.valueOf(invalidNumberOfGuests))));
