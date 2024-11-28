@@ -2,11 +2,11 @@
 
 ## TODO
 
+- Implement updating
 - Add more OpenAPI documentation
 - Add Javadoc
-- Implement updating
-- Implement quartz scheduler logic for reminder jobs
 - Write Postman Collection
+- Implement quartz scheduler logic for reminder jobs
 
 ## Design Decisions
 
