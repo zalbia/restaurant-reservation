@@ -4,9 +4,9 @@
 
 - Add more OpenAPI documentation
 - Add Javadoc
-- Implement services
-- Integration Tests!
+- Implement updating
 - Implement quartz scheduler logic for reminder jobs
+- Write Postman Collection
 
 ## Design Decisions
 

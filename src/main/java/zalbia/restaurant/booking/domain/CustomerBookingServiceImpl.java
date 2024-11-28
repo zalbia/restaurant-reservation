@@ -75,6 +75,6 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
 
     @Override
     public Optional<Reservation> findById(Long reservationId) {
-        return reservationRepository.findById(reservationId);
+        return reservationRepository.findById(reservationId).filter(r -> !r.isCancelled());
     }
 }

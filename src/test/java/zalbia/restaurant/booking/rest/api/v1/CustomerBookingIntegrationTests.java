@@ -174,5 +174,8 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
         verify(emailService).send(anyString());
         verifyNoInteractions(smsService);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "/1"))
+                .andExpect(status().isNotFound());
     }
 }
