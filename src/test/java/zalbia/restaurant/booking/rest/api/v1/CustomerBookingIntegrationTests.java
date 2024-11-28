@@ -87,4 +87,15 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         verify(emailService).send(anyString());
         verifyNoInteractions(smsService);
     }
+
+    @Test
+    @DisplayName("Can cancel reservation and get notified via SMS or email")
+    @Order(3)
+    public void canCancelReservation() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete(RESERVATIONS_URI + "/1"))
+                .andExpect(status().isNoContent());
+
+        verify(emailService).send(anyString());
+        verifyNoInteractions(smsService);
+    }
 }
