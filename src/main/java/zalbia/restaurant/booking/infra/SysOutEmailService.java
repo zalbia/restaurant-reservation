@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 public class SysOutEmailService implements EmailService {
     @Override
     public void send(String message) {
-        System.out.println(message);
+        System.out.println("Email: " + message);
     }
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 public class SysOutSmsService implements SmsService {
     @Override
     public void send(String message) {
-        System.out.println(message);
+        System.out.println("SMS: " + message);
     }
 }
