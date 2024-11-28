@@ -7,10 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
-import zalbia.restaurant.booking.infra.EmailService;
 import zalbia.restaurant.booking.domain.Reservation;
+import zalbia.restaurant.booking.infra.EmailService;
 import zalbia.restaurant.booking.infra.SmsService;
 
 import java.time.LocalDateTime;
@@ -145,20 +146,19 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         }
 
         int pageSize = 5;
-        String jsonResult =
-                mockMvc.perform(
-                                MockMvcRequestBuilders.get(RESERVATIONS_URI + "?guestId=1&page=0&size=" + pageSize)
-                        )
-                        .andExpect(status().is2xxSuccessful())
-                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                        .andReturn()
-                        .getResponse()
-                        .getContentAsString();
+        MockHttpServletRequestBuilder mockRequest =
+                MockMvcRequestBuilders.get(RESERVATIONS_URI + "?guestId=1&page=0&size=" + pageSize);
+        String jsonResult = mockMvc.perform(mockRequest)
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
         List<Reservation> reservations = objectMapper.readValue(jsonResult, new TypeReference<>() {
         });
 
-        assertEquals(5, reservations.size());
+        assertEquals(pageSize, reservations.size());
         List<Reservation> reservationsFromEarliestToLatest = reservations
                 .stream()
                 .sorted(Comparator.comparing(Reservation::getReservationDateTime)).toList();
