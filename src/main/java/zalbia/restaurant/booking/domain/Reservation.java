@@ -123,11 +123,6 @@ public final class Reservation {
         this.numberOfGuests = numberOfGuests;
     }
 
-    @NotNull
-    public CommunicationMethod preferredCommunicationMethod() {
-        return preferredCommunicationMethod;
-    }
-
     /**
      * Cancels an existing reservation. Canceling a reservation that's already cancelled is a noop.
      */
