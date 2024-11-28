@@ -36,6 +36,7 @@
 - All dates and times are local.
 - There isn't a definite limit to the total number of reservations booked for a restaurant.
 - Restaurant is open 24/7. 😱
+- Upcoming reservations are viewed from earliest to latest.
 
 ## Nice to have
 

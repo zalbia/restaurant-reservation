@@ -8,7 +8,7 @@ public interface CustomerBookingService {
 
     public void cancelReservation(Long reservationId);
 
-    List<Reservation> getReservationsPaginated(Long guestId, int page, int size);
+    List<Reservation> getUpcomingReservationsPaginated(Long guestId, int page, int size);
 
     Optional<Reservation> findById(Long reservationId);
 }

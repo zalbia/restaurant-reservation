@@ -41,6 +41,6 @@ public interface ReservationRepository extends
             int numberOfGuests
     );
 
-    @Query("SELECT * FROM reservation WHERE guest_id = :guestId LIMIT :limit OFFSET :offset")
-    List<Reservation> getReservationsPaginated(Long guestId, int limit, int offset);
+    @Query("SELECT * FROM reservation WHERE guest_id = :guestId ORDER BY reservation_date_time LIMIT :limit OFFSET :offset")
+    List<Reservation> getUpcomingReservationsPaginated(Long guestId, int limit, int offset);
 }

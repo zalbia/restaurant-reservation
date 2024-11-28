@@ -69,8 +69,8 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     }
 
     @Override
-    public List<Reservation> getReservationsPaginated(Long guestId, int page, int pageSize) {
-        return reservationRepository.getReservationsPaginated(guestId, pageSize, page * pageSize);
+    public List<Reservation> getUpcomingReservationsPaginated(Long guestId, int page, int pageSize) {
+        return reservationRepository.getUpcomingReservationsPaginated(guestId, pageSize, page * pageSize);
     }
 
     @Override

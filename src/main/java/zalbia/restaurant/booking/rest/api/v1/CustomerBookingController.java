@@ -75,13 +75,18 @@ public class CustomerBookingController {
     }
 
     @Operation(summary = "Fetches a paginated list of all upcoming reservations for a guest.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "A page of a guest's upcoming reservations from earliest to latest")
+    })
     @GetMapping("")
     public List<Reservation> getReservationsPaginated(
             @RequestParam Long guestId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return customerBookingService.getReservationsPaginated(guestId, page, size);
+        return customerBookingService.getUpcomingReservationsPaginated(guestId, page, size);
     }
 
     @Operation(summary = "Fetches a single reservation by ID.")

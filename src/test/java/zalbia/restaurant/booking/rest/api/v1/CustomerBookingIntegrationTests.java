@@ -15,6 +15,7 @@ import zalbia.restaurant.booking.domain.SmsService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -123,25 +124,26 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     }
 
     @Test
-    @DisplayName("Can get guest reservations by page")
-    @Order(3)
+    @DisplayName("Can get guest reservations by page from earliest to latest")
+    @Order(2)
     public void canGetGuestReservationsByPage() throws Exception {
-        ReservationBookingRequest guestReservation = new ReservationBookingRequest(
-                1L,
-                "Customer",
-                "+639170000000",
-                "customer@example.com",
-                futureDate,
-                1,
-                CommunicationMethod.EMAIL
-        );
-        String requestAsJson = objectMapper.writeValueAsString(guestReservation);
         for (int i = 2; i <= 10; i++) {
+            ReservationBookingRequest guestReservation = new ReservationBookingRequest(
+                    1L,
+                    "Customer",
+                    "+639170000000",
+                    "customer@example.com",
+                    futureDate.plusDays(10 - i),
+                    1,
+                    CommunicationMethod.EMAIL
+            );
+            String requestAsJson = objectMapper.writeValueAsString(guestReservation);
             mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestAsJson))
                     .andExpect(status().is2xxSuccessful());
         }
+
         int pageSize = 5;
         String jsonResult =
                 mockMvc.perform(
@@ -157,6 +159,10 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         });
 
         assertEquals(5, reservations.size());
+        List<Reservation> reservationsFromEarliestToLatest = reservations
+                .stream()
+                .sorted(Comparator.comparing(Reservation::getReservationDateTime)).toList();
+        assertEquals(reservationsFromEarliestToLatest, reservations);
     }
 
     @Test
