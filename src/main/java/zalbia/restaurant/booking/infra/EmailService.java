@@ -1,4 +1,4 @@
-package zalbia.restaurant.booking.domain;
+package zalbia.restaurant.booking.infra;
 
 public interface EmailService {
     void send(String message);

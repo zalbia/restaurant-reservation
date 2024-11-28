@@ -35,8 +35,6 @@ public class ReservationValidator {
             CommunicationMethod preferredCommunicationMethod
     ) {
         final Reservation reservation = new Reservation(
-                -1L, // dummy value
-                -1L, // dummy value
                 name,
                 phoneNumber,
                 email,

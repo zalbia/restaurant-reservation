@@ -20,7 +20,7 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     @Override
     @Transactional
     public Reservation bookReservation(BookReservationParams params) {
-        reservationValidator.validateNewReservation(
+        Reservation reservation = reservationValidator.validateNewReservation(
                 params.name(),
                 params.phoneNumber(),
                 params.email(),
@@ -28,19 +28,10 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
                 params.numberOfGuests(),
                 params.preferredCommunicationMethod()
         );
-        // this should really be a returning * query
-        int reservationId = reservationRepository.bookReservation(
-                params.name(),
-                params.phoneNumber(),
-                params.email(),
-                params.preferredCommunicationMethod(),
-                params.reservationDateTime(),
-                params.numberOfGuests()
-        );
-        Reservation reservation = reservationRepository.findById((long) reservationId).get();
+        Reservation savedReservation = reservationRepository.save(reservation);
         notificationService.sendNotification("You have booked a reservation.",
-                reservation.getPreferredCommunicationMethod());
-        return reservation;
+                savedReservation.getPreferredCommunicationMethod());
+        return savedReservation;
     }
 
     @Override

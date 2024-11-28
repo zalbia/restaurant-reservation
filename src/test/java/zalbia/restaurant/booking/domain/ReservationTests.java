@@ -3,8 +3,8 @@ package zalbia.restaurant.booking.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
+import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +18,6 @@ public class ReservationTests {
     @BeforeEach
     public void beforeEach() {
         reservation = new Reservation(
-                1L,
                 1L,
                 "Customer",
                 "+639160000000",

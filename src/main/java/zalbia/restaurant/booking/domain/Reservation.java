@@ -1,16 +1,22 @@
 package zalbia.restaurant.booking.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
-import org.springframework.data.annotation.Id;
-import zalbia.restaurant.booking.domain.validation.*;
+import zalbia.restaurant.booking.domain.validation.PhoneNumber;
+import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
+import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public final class Reservation {
+@Entity
+public class Reservation {
     @Id
-    private final Long id;
-    private final Long guestId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotNull
     @NotBlank
@@ -39,10 +45,34 @@ public final class Reservation {
     // Can be cancelled.
     private boolean isCancelled;
 
+    public Reservation () {
+        this.id = null;
+        this.name = null;
+        this.phoneNumber = null;
+        this.email = null;
+        this.preferredCommunicationMethod = null;
+    }
+
+    Reservation(
+            String name,
+            String phoneNumber,
+            String email,
+            LocalDateTime reservationDateTime,
+            int numberOfGuests,
+            CommunicationMethod preferredCommunicationMethod
+    ) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.reservationDateTime = reservationDateTime;
+        this.numberOfGuests = numberOfGuests;
+        this.preferredCommunicationMethod = preferredCommunicationMethod;
+        this.isCancelled = false;
+    }
+
     // Reservations can only be created within this package
     Reservation(
             Long id,
-            Long guestId,
             String name,
             String phoneNumber,
             String email,
@@ -51,7 +81,6 @@ public final class Reservation {
             CommunicationMethod preferredCommunicationMethod
     ) {
         this.id = id;
-        this.guestId = guestId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -63,10 +92,6 @@ public final class Reservation {
 
     public Long getId() {
         return id;
-    }
-
-    public Long getGuestId() {
-        return guestId;
     }
 
     public String getName() {

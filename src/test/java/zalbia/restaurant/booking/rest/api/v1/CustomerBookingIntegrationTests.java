@@ -7,8 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import zalbia.restaurant.booking.domain.EmailService;
-import zalbia.restaurant.booking.domain.SmsService;
+import zalbia.restaurant.booking.infra.EmailService;
+import zalbia.restaurant.booking.infra.SmsService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -36,7 +36,6 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
     @Test
     @DisplayName("Responds to invalid reservation booking requests with bad request with field errors")
-    @Order(1)
     public void rejectsInvalidReservationBookingRequests() throws Exception {
         ReservationBookingRequest invalidRequest = new ReservationBookingRequest(
                 OptionalLong.of(1L),
@@ -72,7 +71,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
     @Test
     @DisplayName("Can book reservation and get notified via SMS or email")
-    @Order(2)
+    @Order(1)
     public void canBookReservation() throws Exception {
         String requestAsJson = objectMapper.writeValueAsString(validReservationBookingRequest);
         String expectedJson = objectMapper.writeValueAsString(validReservation);

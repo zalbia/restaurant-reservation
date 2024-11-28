@@ -8,7 +8,6 @@ public abstract class ReservationFixture {
 
     protected static final Reservation validReservation = new Reservation(
             1L,
-            1L,
             "Customer",
             "+639170000000",
             "customer@example.com",

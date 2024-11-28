@@ -10,12 +10,15 @@ import jakarta.validation.Valid;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
 import zalbia.restaurant.booking.domain.Reservation;
+import zalbia.restaurant.booking.domain.ReservationRepository;
 
 import java.util.List;
 
@@ -31,6 +34,9 @@ import java.util.List;
 public class CustomerBookingController {
     @Autowired
     private CustomerBookingService customerBookingService;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Operation(summary = "Book a reservation with a name, phone number, email, reservation date and time, number of " +
             "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be " +
@@ -77,12 +83,11 @@ public class CustomerBookingController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "Fetches a paginated list of all upcoming reservations for a guest.")
+    @Operation(summary = "Fetches a paginated list of a guest's upcoming reservations.")
     @GetMapping("")
-    public List<Reservation> getReservationsPaginated(
+    public Page<Reservation> getReservationsPaginated(
             @RequestParam Long guestId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            Pageable pageable
     ) {
         throw new NotImplementedException("Not yet implemented");
     }
