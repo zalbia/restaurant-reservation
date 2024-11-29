@@ -3,7 +3,6 @@ package zalbia.restaurant.booking.rest.api.v1;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import zalbia.restaurant.booking.domain.validation.MissingReservationException;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;

@@ -1,12 +1,11 @@
 package zalbia.restaurant.booking.rest.api.v1;
 
 import jakarta.validation.constraints.*;
-import zalbia.restaurant.booking.domain.ReservationBooking;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
+import zalbia.restaurant.booking.domain.ReservationBooking;
 import zalbia.restaurant.booking.domain.validation.PhoneNumber;
 
 import java.time.LocalDateTime;
-import java.util.OptionalLong;
 
 public record ReservationBookingRequest(
         Long guestId,

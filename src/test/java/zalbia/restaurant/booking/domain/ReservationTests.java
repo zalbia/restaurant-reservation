@@ -3,8 +3,8 @@ package zalbia.restaurant.booking.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
+import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 
 import java.time.LocalDateTime;
 
