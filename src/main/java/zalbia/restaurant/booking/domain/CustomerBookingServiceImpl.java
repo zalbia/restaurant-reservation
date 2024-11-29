@@ -5,11 +5,9 @@ import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import zalbia.restaurant.booking.domain.reminder.EmailReservationReminderJob;
-import zalbia.restaurant.booking.domain.reminder.SmsReservationReminderJob;
+import zalbia.restaurant.booking.domain.reminder.ReservationReminderJob;
 import zalbia.restaurant.booking.domain.validation.MissingReservationException;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -60,13 +58,9 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     private void scheduleReminder(Reservation newReservation) {
         LocalDateTime reminderDateTime = newReservation.getReservationDateTime().minusHours(4);
         if (reminderDateTime.isAfter(LocalDateTime.now())) {
-            JobBuilder jobBuilder = switch (newReservation.getPreferredCommunicationMethod()) {
-                case SMS -> JobBuilder.newJob(SmsReservationReminderJob.class)
-                        .usingJobData("phoneNumber", newReservation.getPhoneNumber());
-                case EMAIL -> JobBuilder.newJob(EmailReservationReminderJob.class)
-                        .usingJobData("email", newReservation.getEmail());
-            };
-            JobDetail job = jobBuilder
+            JobDetail job = JobBuilder.newJob(ReservationReminderJob.class)
+                    .usingJobData("phoneNumber", newReservation.getPhoneNumber())
+                    .usingJobData("email", newReservation.getEmail())
                     .withIdentity(newReservation.getId().toString())
                     .usingJobData("message", "You have a reservation in 4 hours")
                     .build();

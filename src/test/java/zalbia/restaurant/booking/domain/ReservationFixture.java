@@ -16,15 +16,4 @@ public abstract class ReservationFixture {
             1,
             CommunicationMethod.EMAIL
     );
-
-    protected static final Reservation smsReservation = new Reservation(
-            11L,
-            1L,
-            "Customer",
-            "+639170000000",
-            "customer@example.com",
-            futureDate,
-            1,
-            CommunicationMethod.SMS
-    );
 }

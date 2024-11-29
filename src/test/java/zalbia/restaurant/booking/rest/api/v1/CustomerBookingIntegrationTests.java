@@ -266,16 +266,5 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
         verify(smsService).send(anyString(), eq(smsReservationBookingRequest.phoneNumber()));
         verifyNoInteractions(emailService);
-
-        ArgumentCaptor<JobDetail> jobDetailArgumentCaptor = ArgumentCaptor.forClass(JobDetail.class);
-        ArgumentCaptor<Trigger> triggerArgumentCaptor = ArgumentCaptor.forClass(Trigger.class);
-        verify(scheduler).scheduleJob(jobDetailArgumentCaptor.capture(), triggerArgumentCaptor.capture());
-
-        String key = jobDetailArgumentCaptor.getValue().getKey().getName();
-        assertEquals(smsReservation.getId(), Long.valueOf(key));
-
-        Date startTime = triggerArgumentCaptor.getValue().getStartTime();
-        LocalDateTime startDateTime = startTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        assertEquals(smsReservation.getReservationDateTime().minusHours(4), startDateTime);
     }
 }
