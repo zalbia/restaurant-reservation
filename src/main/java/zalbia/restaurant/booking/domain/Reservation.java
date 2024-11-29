@@ -1,10 +1,7 @@
 package zalbia.restaurant.booking.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.ReadOnlyProperty;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
 import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 
@@ -12,7 +9,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public final class Reservation {
+    // enables a hack to update guest IDs to nextval(guest_id_seq) an after booking a reservation.
     public static final long GUEST_ID_SENTINEL = Long.MIN_VALUE;
+
     @Id
     private final Long id;
     private long guestId;
