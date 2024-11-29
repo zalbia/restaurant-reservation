@@ -246,7 +246,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     }
 
     @Test
-    @DisplayName("Cancelling cancelled reservations ")
+    @DisplayName("Cancelling cancelled reservations gets back a 404")
     @Order(5)
     public void cancellingCancelledReservations() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete(RESERVATIONS_URI + "/1"))
@@ -257,7 +257,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     }
 
     @Test
-    @DisplayName("Can get notifications by SMS with a reminder scheduled for four hours before")
+    @DisplayName("Can get notifications by SMS")
     @Order(6)
     public void canGetSmsNotification() throws Exception {
         String requestAsJson = objectMapper.writeValueAsString(smsReservationBookingRequest);
