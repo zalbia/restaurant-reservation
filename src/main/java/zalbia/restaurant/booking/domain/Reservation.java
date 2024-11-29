@@ -11,7 +11,7 @@ import java.util.Objects;
 public final class Reservation {
     @Id
     private final Long id;
-    private long guestId;
+    private final long guestId; //
     private final String name;
     private final String phoneNumber;
     private final String email;
@@ -51,11 +51,6 @@ public final class Reservation {
 
     public Long getGuestId() {
         return guestId;
-    }
-
-    // workaround for updating to guest_id_seq sequence
-    void setGuestId(long guestId) {
-        this.guestId = guestId;
     }
 
     public String getName() {
