@@ -224,4 +224,15 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "/1"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    @DisplayName("Cancelling cancelled reservations ")
+    @Order(5)
+    public void cancellingCancelledReservations() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete(RESERVATIONS_URI + "/1"))
+                .andExpect(status().isNotFound());
+
+        verifyNoInteractions(emailService);
+        verifyNoInteractions(smsService);
+    }
 }

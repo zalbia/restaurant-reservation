@@ -52,7 +52,7 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     @Override
     @Transactional
     public void cancelReservation(Long reservationId) {
-        reservationRepository.findById(reservationId).ifPresentOrElse(reservation -> {
+        reservationRepository.findActiveById(reservationId).ifPresentOrElse(reservation -> {
             reservation.cancel();
             reservationRepository.save(reservation);
             notificationService.sendNotification("You have cancelled reservation " + reservationId,
