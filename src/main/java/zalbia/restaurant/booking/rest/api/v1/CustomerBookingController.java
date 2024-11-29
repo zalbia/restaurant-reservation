@@ -91,7 +91,7 @@ public class CustomerBookingController {
 
     @Operation(summary = "Fetches a single reservation by ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Reservation fetched by ID"),
+            @ApiResponse(responseCode = "200", description = "Reservation found for ID"),
             @ApiResponse(responseCode = "404", description = "Reservation not found")
     })
     @GetMapping("/{reservationId}")
@@ -100,6 +100,10 @@ public class CustomerBookingController {
     }
 
     @Operation(summary = "Updates the time and number of guests for a reservation by ID.\n")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reservation updated"),
+            @ApiResponse(responseCode = "404", description = "Reservation not found")
+    })
     @PatchMapping("/{reservationId}")
     public Reservation updateReservation(
             @PathVariable Long reservationId,
