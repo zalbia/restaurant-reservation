@@ -13,10 +13,10 @@ public class NotificationService {
     @Autowired
     EmailService emailService;
 
-    public void sendNotification(String message, CommunicationMethod preferredCommunicationMethod) {
-        switch (preferredCommunicationMethod) {
-            case CommunicationMethod.SMS -> smsService.send(message);
-            case CommunicationMethod.EMAIL -> emailService.send(message);
+    public void sendNotification(String message, Reservation reservation) {
+        switch (reservation.getPreferredCommunicationMethod()) {
+            case CommunicationMethod.SMS -> smsService.send(message, reservation.getPhoneNumber());
+            case CommunicationMethod.EMAIL -> emailService.send(message, reservation.getEmail());
         }
     }
 }

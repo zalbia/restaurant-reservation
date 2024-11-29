@@ -18,6 +18,8 @@ public record ReservationResponseBody(
         @Min(1)
         long guestId,
 
+        @NotNull
+        @NotBlank
         @Size(min = 1, max = 100)
         String name,
 

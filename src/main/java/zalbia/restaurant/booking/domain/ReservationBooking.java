@@ -1,6 +1,5 @@
 package zalbia.restaurant.booking.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import zalbia.restaurant.booking.domain.validation.PhoneNumber;
 
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
  * A reservation booking for a restaurant. Only valid bookings are used to create a {@link Reservation}.
  */
 public record ReservationBooking(
-        @Nullable
         Long guestId,
 
         @NotNull

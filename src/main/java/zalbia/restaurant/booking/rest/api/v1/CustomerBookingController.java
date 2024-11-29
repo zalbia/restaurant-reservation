@@ -21,7 +21,7 @@ import java.util.List;
 @Tag(
         name = "Customer Booking Endpoint",
         description = "Allows customers to book reservations at a restaurant and manage them. Confirmations are sent " +
-                "via email or SMS notifications per customer preference."
+                "as email or SMS notifications per customer preference."
 )
 @RequestMapping(value = "/api/v1.0/reservations")
 @ComponentScan(basePackages = "zalbia.restaurant.booking.domain")
@@ -55,11 +55,12 @@ public class CustomerBookingController {
         return ReservationResponseBody.fromReservation(customerBookingService.bookReservation(request.toParams()));
     }
 
-    @Operation(summary = "Cancels a reservation given a reservation ID. A notification confirming the cancellation" +
-            "will be sent.")
+    @Operation(summary = "Cancels an active reservation given a reservation ID. A notification confirming the " +
+            "cancellation will be sent.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Reservation deleted"),
-            @ApiResponse(responseCode = "404", description = "No reservation deleted, reservation not found")
+            @ApiResponse(responseCode = "404",
+                    description = "No reservation deleted, reservation not found or already cancelled")
     })
     @DeleteMapping("/{reservationId}")
     public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {

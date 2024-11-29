@@ -26,6 +26,16 @@ public abstract class CommonApiTestFixture extends ReservationFixture {
             CommunicationMethod.EMAIL
     );
 
+    protected static final ReservationBookingRequest smsReservationBookingRequest = new ReservationBookingRequest(
+            null,
+            "Customer",
+            "+639170000000",
+            "customer@example.com",
+            futureDate,
+            1,
+            CommunicationMethod.SMS
+    );
+
     protected static final ReservationResponseBody reservationResponseBody =
             ReservationResponseBody.fromReservation(validReservation);
 }

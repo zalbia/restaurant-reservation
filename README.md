@@ -1,11 +1,21 @@
 # Restaurant Reservation System
 
+Umpisa Technical Project submission by Zachary Albia.
+
 ## TODO
 
-- Write Postman Collection
 - Add more OpenAPI documentation
+- Write Postman Collection
 - Add Javadoc
 - Implement quartz scheduler logic for reminder jobs
+
+## Running
+
+To run the API, run `./gradlew bootRun` and go to the [Swagger UI](http://localhost:8080/swagger-ui/index.html).
+
+## Testing
+
+To run all tests, run `./gradlew test --info`.
 
 ## Design Decisions
 
@@ -21,7 +31,8 @@
     - Simple, suitable for a single node as is the case in this assignment.
 - Use Java 21 records to cut down on the amount of boilerplate.
     - Great for DTOs.
-    - Great for value objects such as [ReservationBooking](src/main/java/zalbia/restaurant/booking/domain/ReservationBooking.java).
+    - Great for value objects such
+      as [ReservationBooking](src/main/java/zalbia/restaurant/booking/domain/ReservationBooking.java).
 - To keep scope in check, booking reservations returns an auto-incremented guest ID for managing reservations instead of
   managing a guest entity.
     - In a production system, guest IDs would just be provided and would be some sort of UUID.
@@ -30,6 +41,7 @@
       responses.
 - Keep domain and web layer separate with DTOs, maintaining strict boundaries via services.
 - Cancelling a reservation soft-deletes it. Cancelling cancelled reservations returns 404.
+- Barebones pagination for viewing upcoming reservations from earliest to latest.
 - No HATEOAS.
 
 ## Assumptions Made

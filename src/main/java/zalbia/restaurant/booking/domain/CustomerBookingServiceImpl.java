@@ -24,29 +24,17 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     @Override
     @Transactional
     public Reservation bookReservation(ReservationBooking reservationBooking) {
-        reservationBookingValidator.validateBooking(reservationBooking);
-        long reservationId = reservationBooking.guestId() == null ?
-                reservationRepository.bookReservationForNewGuest(
-                        reservationBooking.name(),
-                        reservationBooking.phoneNumber(),
-                        reservationBooking.email(),
-                        reservationBooking.preferredCommunicationMethod(),
-                        reservationBooking.reservationDateTime(),
-                        reservationBooking.numberOfGuests()
-                ) :
-                reservationRepository.bookReservationForExistingGuest(
-                        reservationBooking.guestId(),
-                        reservationBooking.name(),
-                        reservationBooking.phoneNumber(),
-                        reservationBooking.email(),
-                        reservationBooking.preferredCommunicationMethod(),
-                        reservationBooking.reservationDateTime(),
-                        reservationBooking.numberOfGuests()
-                );
-        Reservation reservation = reservationRepository.findById(reservationId).get();
-        notificationService.sendNotification("You have booked a reservation.",
-                reservation.getPreferredCommunicationMethod());
-        return reservation;
+        Reservation reservationToSave = reservationBookingValidator.validateBooking(reservationBooking);
+        Reservation newReservation = reservationRepository.save(reservationToSave);
+        // <hack> support guest IDs
+        Long nextGuestId = reservationRepository.getNextGuestId();
+        if (newReservation.getGuestId() == Reservation.GUEST_ID_SENTINEL) {
+            newReservation.setGuestId(nextGuestId);
+            reservationRepository.save(newReservation);
+        }
+        // </hack>
+        notificationService.sendNotification("You have booked a reservation.", newReservation);
+        return newReservation;
     }
 
     @Override
@@ -55,8 +43,8 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
         reservationRepository.findActiveById(reservationId).ifPresentOrElse(reservation -> {
             reservation.cancel();
             reservationRepository.save(reservation);
-            notificationService.sendNotification("You have cancelled reservation " + reservationId,
-                    reservation.getPreferredCommunicationMethod());
+            String message = "You have cancelled reservation " + reservationId;
+            notificationService.sendNotification(message, reservation);
         }, () -> {
             throw new MissingReservationException(reservationId, "Reservation " + reservationId + " not found.");
         });
@@ -69,7 +57,7 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
 
     @Override
     public Optional<Reservation> findById(Long reservationId) {
-        return reservationRepository.findById(reservationId).filter(r -> !r.isCancelled());
+        return reservationRepository.findActiveById(reservationId);
     }
 
     @Override
@@ -78,7 +66,7 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
             LocalDateTime newReservationDateTime,
             int newNumberOfGuests
     ) {
-        return reservationRepository.findById(reservationId)
+        return reservationRepository.findActiveById(reservationId)
                 .map(existingReservation -> {
                     existingReservation.updateReservationDateTime(newReservationDateTime);
                     existingReservation.updateNumberOfGuests(newNumberOfGuests);

@@ -1,7 +1,10 @@
 package zalbia.restaurant.booking.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
 import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 
@@ -9,9 +12,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public final class Reservation {
+    public static final long GUEST_ID_SENTINEL = Long.MIN_VALUE;
     @Id
     private final Long id;
-    private final Long guestId;
+    private long guestId;
     private final String name;
     private final String phoneNumber;
     private final String email;
@@ -51,6 +55,11 @@ public final class Reservation {
 
     public Long getGuestId() {
         return guestId;
+    }
+
+    // workaround for updating to guest_id_seq sequence
+    void setGuestId(long guestId) {
+        this.guestId = guestId;
     }
 
     public String getName() {

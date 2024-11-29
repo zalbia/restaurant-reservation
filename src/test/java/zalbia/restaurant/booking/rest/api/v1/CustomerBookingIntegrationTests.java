@@ -22,6 +22,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -54,7 +55,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
                 mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(invalidRequest)))
-                        .andExpect(status().is4xxClientError())
+                        .andExpect(status().isBadRequest())
                         .andReturn();
         Map<String, String> fieldErrors = objectMapper.readValue(result.getResponse().getContentAsString(), Map.class);
 
@@ -82,11 +83,11 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestAsJson))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
 
-        verify(emailService).send(anyString());
+        verify(emailService).send(anyString(), eq(validReservationBookingRequest.email()));
         verifyNoInteractions(smsService);
     }
 
@@ -97,12 +98,12 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         String expectedJson = objectMapper.writeValueAsString(List.of(reservationResponseBody));
 
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "?guestId=1&page=0&size=10"))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
 
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "?guestId=404&page=0&size=10"))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));
     }
@@ -112,7 +113,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     @Order(2)
     public void canGetReservationById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "/1"))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(reservationResponseBody)));
 
@@ -141,14 +142,14 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
             mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestAsJson))
-                    .andExpect(status().is2xxSuccessful());
+                    .andExpect(status().isOk());
         }
 
         int pageSize = 5;
         MockHttpServletRequestBuilder mockRequest =
                 MockMvcRequestBuilders.get(RESERVATIONS_URI + "?guestId=1&page=0&size=" + pageSize);
         String jsonResult = mockMvc.perform(mockRequest)
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
                 .getResponse()
@@ -218,7 +219,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         mockMvc.perform(MockMvcRequestBuilders.delete(RESERVATIONS_URI + "/1"))
                 .andExpect(status().isNoContent());
 
-        verify(emailService).send(anyString());
+        verify(emailService).send(anyString(), eq(validReservationBookingRequest.email()));
         verifyNoInteractions(smsService);
 
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "/1"))
@@ -234,5 +235,20 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
         verifyNoInteractions(emailService);
         verifyNoInteractions(smsService);
+    }
+
+    @Test
+    @DisplayName("Can get notifications by SMS")
+    @Order(6)
+    public void canGetSmsNotification() throws Exception {
+        String requestAsJson = objectMapper.writeValueAsString(smsReservationBookingRequest);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestAsJson))
+                .andExpect(status().isOk());
+
+        verify(smsService).send(anyString(), eq(smsReservationBookingRequest.phoneNumber()));
+        verifyNoInteractions(emailService);
     }
 }
