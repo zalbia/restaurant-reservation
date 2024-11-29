@@ -25,7 +25,7 @@ public class ReservationBookingValidator {
      *
      * @throws ReservationValidationException if reservation arguments are invalid
      */
-    public Reservation validateBooking(ReservationBooking reservationBooking) {
+    public void validateBooking(ReservationBooking reservationBooking) {
         Set<ConstraintViolation<ReservationBooking>> violations = validator.validate(reservationBooking);
         if (!violations.isEmpty()) {
             throw new ReservationValidationException(
@@ -34,15 +34,5 @@ public class ReservationBookingValidator {
                             .collect(Collectors.joining(", "))
             );
         }
-        return new Reservation(
-                null,
-                reservationBooking.guestId() == null ? Reservation.GUEST_ID_SENTINEL : reservationBooking.guestId(),
-                reservationBooking.name(),
-                reservationBooking.phoneNumber(),
-                reservationBooking.email(),
-                reservationBooking.reservationDateTime(),
-                reservationBooking.numberOfGuests(),
-                reservationBooking.preferredCommunicationMethod()
-        );
     }
 }

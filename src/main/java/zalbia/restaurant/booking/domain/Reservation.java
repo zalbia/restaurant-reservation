@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public final class Reservation {
-    // enables a hack to update guest IDs to nextval(guest_id_seq) an after booking a reservation.
-    public static final long GUEST_ID_SENTINEL = Long.MIN_VALUE;
-
     @Id
     private final Long id;
     private long guestId;

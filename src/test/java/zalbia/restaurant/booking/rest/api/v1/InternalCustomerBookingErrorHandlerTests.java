@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.quartz.Scheduler;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -28,6 +29,9 @@ public class InternalCustomerBookingErrorHandlerTests extends CommonApiTestFixtu
     @Mock
     @MockitoBean
     private CustomerBookingService customerBookingService;
+
+    @MockitoBean
+    private Scheduler scheduler;
 
     @Test
     @DisplayName("Reservation validation errors bubble up as internal server errors")

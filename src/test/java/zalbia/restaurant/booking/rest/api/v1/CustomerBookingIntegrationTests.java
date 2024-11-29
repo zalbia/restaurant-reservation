@@ -2,6 +2,10 @@ package zalbia.restaurant.booking.rest.api.v1;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentCaptor;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -14,11 +18,9 @@ import zalbia.restaurant.booking.infra.EmailService;
 import zalbia.restaurant.booking.infra.SmsService;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -37,6 +39,9 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
     @MockitoBean
     EmailService emailService;
+
+    @MockitoBean
+    Scheduler scheduler;
 
     @Test
     @DisplayName("Responds to invalid reservation booking requests with bad request with field errors")
@@ -74,7 +79,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     }
 
     @Test
-    @DisplayName("Can book reservation and get notified via SMS or email")
+    @DisplayName("Can book reservation, get notified via SMS or email with reminder scheduled 4 hours before")
     @Order(1)
     public void canBookReservation() throws Exception {
         String requestAsJson = objectMapper.writeValueAsString(validReservationBookingRequest);
@@ -89,6 +94,17 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
         verify(emailService).send(anyString(), eq(validReservationBookingRequest.email()));
         verifyNoInteractions(smsService);
+
+        ArgumentCaptor<JobDetail> jobDetailArgumentCaptor = ArgumentCaptor.forClass(JobDetail.class);
+        ArgumentCaptor<Trigger> triggerArgumentCaptor = ArgumentCaptor.forClass(Trigger.class);
+        verify(scheduler).scheduleJob(jobDetailArgumentCaptor.capture(), triggerArgumentCaptor.capture());
+
+        String key = jobDetailArgumentCaptor.getValue().getKey().getName();
+        assertEquals(validReservation.getId(), Long.valueOf(key));
+
+        Date startTime = triggerArgumentCaptor.getValue().getStartTime();
+        LocalDateTime startDateTime = startTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        assertEquals(validReservation.getReservationDateTime().minusHours(4), startDateTime);
     }
 
     @Test
@@ -238,7 +254,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     }
 
     @Test
-    @DisplayName("Can get notifications by SMS")
+    @DisplayName("Can get notifications by SMS with a reminder scheduled for four hours before")
     @Order(6)
     public void canGetSmsNotification() throws Exception {
         String requestAsJson = objectMapper.writeValueAsString(smsReservationBookingRequest);
@@ -250,5 +266,16 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
 
         verify(smsService).send(anyString(), eq(smsReservationBookingRequest.phoneNumber()));
         verifyNoInteractions(emailService);
+
+        ArgumentCaptor<JobDetail> jobDetailArgumentCaptor = ArgumentCaptor.forClass(JobDetail.class);
+        ArgumentCaptor<Trigger> triggerArgumentCaptor = ArgumentCaptor.forClass(Trigger.class);
+        verify(scheduler).scheduleJob(jobDetailArgumentCaptor.capture(), triggerArgumentCaptor.capture());
+
+        String key = jobDetailArgumentCaptor.getValue().getKey().getName();
+        assertEquals(smsReservation.getId(), Long.valueOf(key));
+
+        Date startTime = triggerArgumentCaptor.getValue().getStartTime();
+        LocalDateTime startDateTime = startTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        assertEquals(smsReservation.getReservationDateTime().minusHours(4), startDateTime);
     }
 }

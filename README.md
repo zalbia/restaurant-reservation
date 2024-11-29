@@ -2,11 +2,6 @@
 
 Umpisa Technical Project submission by Zachary Albia.
 
-## TODO
-
-- Add Javadoc
-- Implement quartz scheduler logic for reminder jobs
-
 ## Running
 
 To run the API, run `./gradlew bootRun` and go to the [Swagger UI](http://localhost:8080/swagger-ui/index.html).
