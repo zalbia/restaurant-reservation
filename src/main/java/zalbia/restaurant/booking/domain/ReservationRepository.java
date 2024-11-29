@@ -18,7 +18,7 @@ public interface ReservationRepository extends
     @Query("INSERT INTO reservation (name, phone_number, email, preferred_communication_method," +
             " reservation_date_time, number_of_guests) VALUES (:name, :phoneNumber, :email, " +
             ":preferredCommunicationMethod, :reservationDateTime, :numberOfGuests)")
-    int bookReservation(
+    int bookReservationForNewGuest(
             String name,
             String phoneNumber,
             String email,
@@ -31,7 +31,7 @@ public interface ReservationRepository extends
     @Query("INSERT INTO reservation (guest_id, name, phone_number, email, preferred_communication_method," +
             " reservation_date_time, number_of_guests) VALUES (:guestId, :name, :phoneNumber, :email, " +
             ":preferredCommunicationMethod, :reservationDateTime, :numberOfGuests)")
-    int bookReservationForGuest(
+    int bookReservationForExistingGuest(
             Long guestId,
             String name,
             String phoneNumber,

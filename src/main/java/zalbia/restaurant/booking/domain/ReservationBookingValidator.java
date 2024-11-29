@@ -5,16 +5,15 @@ import jakarta.validation.Validator;
 import org.springframework.stereotype.Component;
 import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class ReservationValidator {
+public class ReservationBookingValidator {
 
     private final Validator validator;
 
-    public ReservationValidator(Validator validator) {
+    public ReservationBookingValidator(Validator validator) {
         this.validator = validator;
     }
 
@@ -22,29 +21,12 @@ public class ReservationValidator {
      * Validates a new reservation. Throws a {@link ReservationValidationException} for invalid reservations.
      * Validation is performed by an auto-injected {@link Validator} dependency.
      * <p>
-     * See {@link Reservation} for constraints.
+     * See {@link ReservationBooking} for constraints.
      *
      * @throws ReservationValidationException if reservation arguments are invalid
      */
-    public Reservation validateNewReservation(
-            String name,
-            String phoneNumber,
-            String email,
-            LocalDateTime reservationDateTime,
-            int numberOfGuests,
-            CommunicationMethod preferredCommunicationMethod
-    ) {
-        final Reservation reservation = new Reservation(
-                -1L, // dummy value
-                -1L, // dummy value
-                name,
-                phoneNumber,
-                email,
-                reservationDateTime,
-                numberOfGuests,
-                preferredCommunicationMethod
-        );
-        Set<ConstraintViolation<Reservation>> violations = validator.validate(reservation);
+    public void validateBooking(ReservationBooking reservationBooking) {
+        Set<ConstraintViolation<ReservationBooking>> violations = validator.validate(reservationBooking);
         if (!violations.isEmpty()) {
             throw new ReservationValidationException(
                     violations.stream()
@@ -52,6 +34,5 @@ public class ReservationValidator {
                             .collect(Collectors.joining(", "))
             );
         }
-        return reservation;
     }
 }

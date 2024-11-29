@@ -11,11 +11,9 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
-import zalbia.restaurant.booking.domain.Reservation;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ import java.util.List;
         description = "Allows customers to book reservations at a restaurant and manage them. Confirmations are sent " +
                 "via email or SMS notifications per customer preference."
 )
-@RequestMapping("/api/v1.0/reservations")
+@RequestMapping(value = "/api/v1.0/reservations")
 @ComponentScan(basePackages = "zalbia.restaurant.booking.domain")
 @ComponentScan(basePackages = "zalbia.restaurant.booking.infra")
 public class CustomerBookingController {
@@ -50,16 +48,11 @@ public class CustomerBookingController {
                               "email": "must be a well-formed email address"
                             }"""
                     ))
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Internal error",
-                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             )
     })
-    @PostMapping(value = "", produces = "application/json")
-    public Reservation bookReservation(@Valid @RequestBody ReservationBookingRequest request) {
-        return customerBookingService.bookReservation(request.toParams());
+    @PostMapping(value = "", consumes = "application/json", produces = "application/json")
+    public ReservationResponseBody bookReservation(@Valid @RequestBody ReservationBookingRequest request) {
+        return ReservationResponseBody.fromReservation(customerBookingService.bookReservation(request.toParams()));
     }
 
     @Operation(summary = "Cancels a reservation given a reservation ID. A notification confirming the cancellation" +
@@ -80,13 +73,16 @@ public class CustomerBookingController {
                     responseCode = "200",
                     description = "A page of a guest's upcoming reservations from earliest to latest")
     })
-    @GetMapping("")
-    public List<Reservation> getReservationsPaginated(
+    @GetMapping(value = "", produces = "application/json")
+    public List<ReservationResponseBody> getReservationsPaginated(
             @RequestParam Long guestId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return customerBookingService.getUpcomingReservationsPaginated(guestId, page, size);
+        return customerBookingService.getUpcomingReservationsPaginated(guestId, page, size)
+                .stream()
+                .map(ReservationResponseBody::fromReservation)
+                .toList();
     }
 
     @Operation(summary = "Fetches a single reservation by ID.")
@@ -95,8 +91,12 @@ public class CustomerBookingController {
             @ApiResponse(responseCode = "404", description = "Reservation not found")
     })
     @GetMapping("/{reservationId}")
-    public ResponseEntity<Reservation> getReservation(@PathVariable Long reservationId) {
-        return ResponseEntity.of(customerBookingService.findById(reservationId));
+    public ResponseEntity<ReservationResponseBody> getReservation(@PathVariable Long reservationId) {
+        return ResponseEntity.of(
+                customerBookingService
+                        .findById(reservationId)
+                        .map(ReservationResponseBody::fromReservation)
+        );
     }
 
     @Operation(summary = "Updates the time and number of guests for a reservation by ID.\n")
@@ -104,8 +104,8 @@ public class CustomerBookingController {
             @ApiResponse(responseCode = "200", description = "Reservation updated"),
             @ApiResponse(responseCode = "404", description = "Reservation not found")
     })
-    @PatchMapping("/{reservationId}")
-    public Reservation updateReservation(
+    @PatchMapping(value = "/{reservationId}", consumes = "application/json", produces = "application/json")
+    public ReservationResponseBody updateReservation(
             @PathVariable Long reservationId,
             @Valid @RequestBody UpdateBookingRequest updateRequest
     ) {

@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import zalbia.restaurant.booking.domain.CommunicationMethod;
-import zalbia.restaurant.booking.domain.Reservation;
 import zalbia.restaurant.booking.infra.EmailService;
 import zalbia.restaurant.booking.infra.SmsService;
 
@@ -79,7 +78,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     @Order(1)
     public void canBookReservation() throws Exception {
         String requestAsJson = objectMapper.writeValueAsString(validReservationBookingRequest);
-        String expectedJson = objectMapper.writeValueAsString(validReservation);
+        String expectedJson = objectMapper.writeValueAsString(reservationResponseBody);
 
         mockMvc.perform(MockMvcRequestBuilders.post(RESERVATIONS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -96,7 +95,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     @DisplayName("Can get reservations given guest ID")
     @Order(2)
     public void canGetGuestReservations() throws Exception {
-        String expectedJson = objectMapper.writeValueAsString(List.of(validReservation));
+        String expectedJson = objectMapper.writeValueAsString(List.of(reservationResponseBody));
 
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "?guestId=1&page=0&size=10"))
                 .andExpect(status().is2xxSuccessful())
@@ -116,7 +115,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "/1"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(validReservation)));
+                .andExpect(content().json(objectMapper.writeValueAsString(reservationResponseBody)));
 
         String nonExistentReservationID = "404";
         mockMvc.perform(MockMvcRequestBuilders.get(RESERVATIONS_URI + "/" + nonExistentReservationID))
@@ -155,13 +154,13 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
                 .getResponse()
                 .getContentAsString();
 
-        List<Reservation> reservations = objectMapper.readValue(jsonResult, new TypeReference<>() {
+        List<ReservationResponseBody> reservations = objectMapper.readValue(jsonResult, new TypeReference<>() {
         });
 
         assertEquals(pageSize, reservations.size());
-        List<Reservation> reservationsFromEarliestToLatest = reservations
+        List<ReservationResponseBody> reservationsFromEarliestToLatest = reservations
                 .stream()
-                .sorted(Comparator.comparing(Reservation::getReservationDateTime)).toList();
+                .sorted(Comparator.comparing(ReservationResponseBody::reservationDateTime)).toList();
         assertEquals(reservationsFromEarliestToLatest, reservations);
     }
 

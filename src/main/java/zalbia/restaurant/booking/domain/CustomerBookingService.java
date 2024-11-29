@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerBookingService {
-    public Reservation bookReservation(BookReservationParams params);
+    public Reservation bookReservation(ReservationBooking reservationBooking);
 
     public void cancelReservation(Long reservationId);
 

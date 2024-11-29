@@ -15,39 +15,32 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     private ReservationRepository reservationRepository;
 
     @Autowired
-    private ReservationValidator reservationValidator;
+    private ReservationBookingValidator reservationBookingValidator;
 
     @Autowired
     private NotificationService notificationService;
 
     @Override
     @Transactional
-    public Reservation bookReservation(BookReservationParams params) {
-        reservationValidator.validateNewReservation(
-                params.name(),
-                params.phoneNumber(),
-                params.email(),
-                params.reservationDateTime(),
-                params.numberOfGuests(),
-                params.preferredCommunicationMethod()
-        );
-        long reservationId = params.guestId() == null ?
-                reservationRepository.bookReservation(
-                        params.name(),
-                        params.phoneNumber(),
-                        params.email(),
-                        params.preferredCommunicationMethod(),
-                        params.reservationDateTime(),
-                        params.numberOfGuests()
+    public Reservation bookReservation(ReservationBooking reservationBooking) {
+        reservationBookingValidator.validateBooking(reservationBooking);
+        long reservationId = reservationBooking.guestId() == null ?
+                reservationRepository.bookReservationForNewGuest(
+                        reservationBooking.name(),
+                        reservationBooking.phoneNumber(),
+                        reservationBooking.email(),
+                        reservationBooking.preferredCommunicationMethod(),
+                        reservationBooking.reservationDateTime(),
+                        reservationBooking.numberOfGuests()
                 ) :
-                reservationRepository.bookReservationForGuest(
-                        params.guestId(),
-                        params.name(),
-                        params.phoneNumber(),
-                        params.email(),
-                        params.preferredCommunicationMethod(),
-                        params.reservationDateTime(),
-                        params.numberOfGuests()
+                reservationRepository.bookReservationForExistingGuest(
+                        reservationBooking.guestId(),
+                        reservationBooking.name(),
+                        reservationBooking.phoneNumber(),
+                        reservationBooking.email(),
+                        reservationBooking.preferredCommunicationMethod(),
+                        reservationBooking.reservationDateTime(),
+                        reservationBooking.numberOfGuests()
                 );
         Reservation reservation = reservationRepository.findById(reservationId).get();
         notificationService.sendNotification("You have booked a reservation.",

@@ -16,7 +16,7 @@ public abstract class CommonApiTestFixture extends ReservationFixture {
     @Autowired
     protected MockMvc mockMvc;
 
-    protected static ReservationBookingRequest validReservationBookingRequest = new ReservationBookingRequest(
+    protected static final ReservationBookingRequest validReservationBookingRequest = new ReservationBookingRequest(
             null,
             "Customer",
             "+639170000000",
@@ -25,4 +25,7 @@ public abstract class CommonApiTestFixture extends ReservationFixture {
             1,
             CommunicationMethod.EMAIL
     );
+
+    protected static final ReservationResponseBody reservationResponseBody =
+            ReservationResponseBody.fromReservation(validReservation);
 }

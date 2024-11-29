@@ -1,8 +1,9 @@
 package zalbia.restaurant.booking.domain;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
-import zalbia.restaurant.booking.domain.validation.*;
+import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
+import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,36 +12,16 @@ public final class Reservation {
     @Id
     private final Long id;
     private final Long guestId;
-
-    @NotNull
-    @NotBlank
-    @Size(min = 1, max = 100)
     private final String name;
-
-    @NotNull
-    @PhoneNumber
     private final String phoneNumber;
-
-    @NotNull
-    @Email
     private final String email;
-
-    @NotNull
     private final CommunicationMethod preferredCommunicationMethod;
+
     // Only reservation date time and number of guests can be changed once a reservation is booked.
-
-    @NotNull
-    @Future
     private LocalDateTime reservationDateTime;
-
-    @NotNull
-    @Min(value = 1, message = "Number of guests must be at least 1")
-    @Max(value = 8, message = "Number of guests cannot exceed 8")
-    private Integer numberOfGuests;
-
-    @NotNull
-    // Can be cancelled.
-    private Boolean isCancelled;
+    private int numberOfGuests;
+    // Reservations can be cancelled.
+    private boolean isCancelled;
 
     // Reservations can only be created within this package
     Reservation(

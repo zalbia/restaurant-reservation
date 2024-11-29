@@ -1,16 +1,20 @@
-package zalbia.restaurant.booking.rest.api.v1;
+package zalbia.restaurant.booking.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
-import zalbia.restaurant.booking.domain.ReservationBooking;
-import zalbia.restaurant.booking.domain.CommunicationMethod;
 import zalbia.restaurant.booking.domain.validation.PhoneNumber;
 
 import java.time.LocalDateTime;
 
-public record ReservationBookingRequest(
+/**
+ * A reservation booking for a restaurant. Only valid bookings are used to create a {@link Reservation}.
+ */
+public record ReservationBooking(
+        @Nullable
         Long guestId,
 
         @NotNull
+        @NotBlank
         @Size(min = 1, max = 100)
         String name,
 
@@ -29,20 +33,9 @@ public record ReservationBookingRequest(
         @NotNull
         @Min(value = 1, message = "Number of guests must be at least 1")
         @Max(value = 8, message = "Number of guests cannot exceed 8")
-        Integer numberOfGuests,
+        int numberOfGuests,
 
         @NotNull
         CommunicationMethod preferredCommunicationMethod
 ) {
-    public ReservationBooking toParams() {
-        return new ReservationBooking(
-                guestId,
-                name,
-                phoneNumber,
-                email,
-                reservationDateTime,
-                numberOfGuests,
-                preferredCommunicationMethod
-        );
-    }
 }

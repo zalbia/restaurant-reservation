@@ -21,12 +21,16 @@
 - Use auto-incremented IDs in h2
     - Simple, suitable for a single node as is the case in this assignment.
 - Use Java 21 records to cut down on the amount of boilerplate.
+    - Great for DTOs.
+    - Also great for value objects such as ReservationBooking.
 - To keep scope in check, booking reservations returns an auto-incremented guest ID for managing reservations instead of
   managing a guest entity.
     - In a production system, guest IDs would just be provided and would be some sort of UUID.
 - Created an exception hierarchy for internal customer booking errors.
     - These runtime errors are allowed to bubble up to the web layer and handled by returning appropriate HTTP
       responses.
+- Return a reservation response DTO to allow the domain to change without changing the API.
+- No HATEOAS.
 
 ## Assumptions Made
 
