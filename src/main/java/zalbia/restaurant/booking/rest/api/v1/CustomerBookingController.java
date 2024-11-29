@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zalbia.restaurant.booking.domain.CustomerBookingService;
@@ -31,7 +32,7 @@ public class CustomerBookingController {
 
     @Operation(summary = "Book a reservation with a name, phone number, email, reservation date and time, number of " +
             "guests, and a preferred way to get a confirmation. A notification confirming the reservation will be " +
-            "sent. Returning guests may specify a guestId to book a new reservation.")
+            "sent. Returning guests may specify a guestId to book another new reservation.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Reservation booked"),
             @ApiResponse(
@@ -70,7 +71,8 @@ public class CustomerBookingController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "A page of a guest's upcoming reservations from earliest to latest")
+                    description = "A page of a guest's upcoming reservations from earliest to latest." +
+                            " Returns an empty JSON array when no reservations are found.")
     })
     @GetMapping(value = "", produces = "application/json")
     public List<ReservationResponseBody> getReservationsPaginated(
@@ -87,9 +89,16 @@ public class CustomerBookingController {
     @Operation(summary = "Fetches a single reservation by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Reservation found for ID"),
-            @ApiResponse(responseCode = "404", description = "Reservation not found")
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Reservation not found",
+                    content = @Content(
+                            mediaType = MediaType.ALL_VALUE,
+                            examples = {}
+                    )
+            )
     })
-    @GetMapping("/{reservationId}")
+    @GetMapping(value = "/{reservationId}", produces = "application/json")
     public ResponseEntity<ReservationResponseBody> getReservation(@PathVariable Long reservationId) {
         return ResponseEntity.of(
                 customerBookingService
@@ -101,7 +110,14 @@ public class CustomerBookingController {
     @Operation(summary = "Updates the time and number of guests for a reservation by ID.\n")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Reservation updated"),
-            @ApiResponse(responseCode = "404", description = "Reservation not found")
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Reservation not found",
+                    content = @Content(
+                            mediaType = MediaType.ALL_VALUE,
+                            examples = {}
+                    )
+            )
     })
     @PatchMapping(value = "/{reservationId}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ReservationResponseBody> updateReservation(
