@@ -4,7 +4,6 @@ Umpisa Technical Project submission by Zachary Albia.
 
 ## TODO
 
-- Write Postman Collection
 - Add Javadoc
 - Implement quartz scheduler logic for reminder jobs
 
@@ -15,6 +14,18 @@ To run the API, run `./gradlew bootRun` and go to the [Swagger UI](http://localh
 ## Testing
 
 To run all tests, run `./gradlew test --info`.
+
+[CustomerBookingIntegrationTests](src/test/java/zalbia/restaurant/booking/rest/api/v1/CustomerBookingIntegrationTests.java)
+is a `@SpringBootTest` which contains ordered integration tests that cover the web layer down to the data layer.
+
+[InternalCustomerBookingErrorHandlerTests](src/test/java/zalbia/restaurant/booking/rest/api/v1/InternalCustomerBookingErrorHandlerTests.java)
+is a `@WebMvcTest` which contains internal error handling at the web layer for domain layer validation errors.
+
+[ReservationBookingValidatorTests](src/test/java/zalbia/restaurant/booking/domain/ReservationBookingValidatorTests.java)
+is a plain unit for validating reservation booking.
+
+[ReservationTests](src/test/java/zalbia/restaurant/booking/domain/ReservationTests.java) is a plain unit test for
+reservation update validation.
 
 ## Design Decisions
 
@@ -53,7 +64,7 @@ To run all tests, run `./gradlew test --info`.
 - Restaurant is open 24/7. 😱
 - Upcoming reservations are viewed from earliest to latest.
 - Names, phone numbers, and emails can be duplicated.
-- Guests (identified by guest ID) can only have one reservation for an exact 🤔 date time.
+- Guests (identified by guest ID) can have duplicate reservation for an exact 🤔 date time.
 
 ## Nice to have
 
