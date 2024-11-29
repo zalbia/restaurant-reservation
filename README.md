@@ -59,4 +59,5 @@ reservation update validation.
 - Restaurant is open 24/7. 😱
 - Upcoming reservations are viewed from earliest to latest.
 - Names, phone numbers, and emails can be duplicated.
-- Guests (identified by guest ID) can have duplicate reservations for an exact 🤔 date time. 
+- Guests (identified by guest ID) can have duplicate reservations for an exact 🤔 date time.
+- Sends confirmation on reservation update.

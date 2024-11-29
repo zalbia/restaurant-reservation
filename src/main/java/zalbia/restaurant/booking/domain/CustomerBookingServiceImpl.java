@@ -103,16 +103,16 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
             @Nullable LocalDateTime newReservationDateTime,
             Integer newNumberOfGuests
     ) {
-        return reservationRepository.findActiveById(reservationId)
-                .map(existingReservation -> {
-                    if (newReservationDateTime != null) {
-                        existingReservation.updateReservationDateTime(newReservationDateTime);
-                    }
-                    if (newNumberOfGuests != null) {
-                        existingReservation.updateNumberOfGuests(newNumberOfGuests);
-                    }
-                    reservationRepository.save(existingReservation);
-                    return existingReservation;
-                });
+        return reservationRepository.findActiveById(reservationId).map(existingReservation -> {
+            if (newReservationDateTime != null) {
+                existingReservation.updateReservationDateTime(newReservationDateTime);
+            }
+            if (newNumberOfGuests != null) {
+                existingReservation.updateNumberOfGuests(newNumberOfGuests);
+            }
+            reservationRepository.save(existingReservation);
+            notificationService.sendNotification("You have updated your reservation", existingReservation);
+            return existingReservation;
+        });
     }
 }

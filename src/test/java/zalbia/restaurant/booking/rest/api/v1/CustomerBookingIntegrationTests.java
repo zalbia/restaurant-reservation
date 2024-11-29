@@ -226,6 +226,9 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
                         .content(updateRequestJson))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedJson));
+
+        verify(emailService).send(anyString(), eq(validReservationBookingRequest.email()));
+        verifyNoInteractions(smsService);
     }
 
     @Test
