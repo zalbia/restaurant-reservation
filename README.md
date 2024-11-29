@@ -59,9 +59,4 @@ reservation update validation.
 - Restaurant is open 24/7. 😱
 - Upcoming reservations are viewed from earliest to latest.
 - Names, phone numbers, and emails can be duplicated.
-- Guests (identified by guest ID) can have duplicate reservation for an exact 🤔 date time.
-
-## Nice to have
-
-- Add discoverability (next, previous, etc.) to getting paginated reservations
-- Consider "idempotency" of creating reservations, e.g. only allowing one reservation under one name per day. 
+- Guests (identified by guest ID) can have duplicate reservations for an exact 🤔 date time. 
