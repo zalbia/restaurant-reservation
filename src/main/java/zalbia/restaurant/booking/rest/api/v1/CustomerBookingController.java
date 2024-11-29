@@ -90,13 +90,17 @@ public class CustomerBookingController {
     }
 
     @Operation(summary = "Fetches a single reservation by ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reservation fetched by ID"),
+            @ApiResponse(responseCode = "404", description = "Reservation not found")
+    })
     @GetMapping("/{reservationId}")
     public ResponseEntity<Reservation> getReservation(@PathVariable Long reservationId) {
         return ResponseEntity.of(customerBookingService.findById(reservationId));
     }
 
     @Operation(summary = "Updates the time and number of guests for a reservation by ID.\n")
-    @PutMapping("/{reservationId}")
+    @PatchMapping("/{reservationId}")
     public Reservation updateReservation(
             @PathVariable Long reservationId,
             @Valid @RequestBody UpdateBookingRequest updateRequest
