@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -105,10 +104,16 @@ public class CustomerBookingController {
             @ApiResponse(responseCode = "404", description = "Reservation not found")
     })
     @PatchMapping(value = "/{reservationId}", consumes = "application/json", produces = "application/json")
-    public ReservationResponseBody updateReservation(
+    public ResponseEntity<ReservationResponseBody> updateReservation(
             @PathVariable Long reservationId,
-            @Valid @RequestBody UpdateBookingRequest updateRequest
+            @Valid @RequestBody UpdateReservationRequest updateRequest
     ) {
-        throw new NotImplementedException("Not yet implemented");
+        return ResponseEntity.of(
+                customerBookingService.updateReservation(
+                        reservationId,
+                        updateRequest.newReservationDateTime(),
+                        updateRequest.newNumberOfGuests()
+                ).map(ReservationResponseBody::fromReservation)
+        );
     }
 }

@@ -7,10 +7,10 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record UpdateBookingRequest(
+public record UpdateReservationRequest(
         @NotNull
         @Future
-        LocalDateTime newDateTime,
+        LocalDateTime newReservationDateTime,
 
         @Min(value = 1, message = "New number of guests must be at least 1")
         @Max(value = 8, message = "New number of guests cannot exceed 8")

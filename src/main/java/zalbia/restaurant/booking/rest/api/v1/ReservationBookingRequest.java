@@ -11,6 +11,7 @@ public record ReservationBookingRequest(
         Long guestId,
 
         @NotNull
+        @NotBlank
         @Size(min = 1, max = 100)
         String name,
 

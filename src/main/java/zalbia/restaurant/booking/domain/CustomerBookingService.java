@@ -1,14 +1,17 @@
 package zalbia.restaurant.booking.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface CustomerBookingService {
-    public Reservation bookReservation(ReservationBooking reservationBooking);
+    Reservation bookReservation(ReservationBooking reservationBooking);
 
-    public void cancelReservation(Long reservationId);
+    void cancelReservation(Long reservationId);
 
     List<Reservation> getUpcomingReservationsPaginated(Long guestId, int page, int size);
 
     Optional<Reservation> findById(Long reservationId);
+
+    Optional<Reservation> updateReservation(Long reservationId, LocalDateTime localDateTime, int i);
 }

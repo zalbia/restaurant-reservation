@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zalbia.restaurant.booking.domain.validation.MissingReservationException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +70,20 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     @Override
     public Optional<Reservation> findById(Long reservationId) {
         return reservationRepository.findById(reservationId).filter(r -> !r.isCancelled());
+    }
+
+    @Override
+    public Optional<Reservation> updateReservation(
+            Long reservationId,
+            LocalDateTime newReservationDateTime,
+            int newNumberOfGuests
+    ) {
+        return reservationRepository.findById(reservationId)
+                .map(existingReservation -> {
+                    existingReservation.updateReservationDateTime(newReservationDateTime);
+                    existingReservation.updateNumberOfGuests(newNumberOfGuests);
+                    reservationRepository.save(existingReservation);
+                    return existingReservation;
+                });
     }
 }

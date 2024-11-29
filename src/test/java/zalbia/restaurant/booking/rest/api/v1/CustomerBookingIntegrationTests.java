@@ -24,8 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -127,6 +126,7 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
     @DisplayName("Can get guest reservations by page from earliest to latest")
     @Order(2)
     public void canGetGuestReservationsByPage() throws Exception {
+        // add more guest reservations
         for (int i = 2; i <= 10; i++) {
             ReservationBookingRequest guestReservation = new ReservationBookingRequest(
                     1L,
@@ -162,6 +162,53 @@ public class CustomerBookingIntegrationTests extends CommonApiTestFixture {
                 .stream()
                 .sorted(Comparator.comparing(ReservationResponseBody::reservationDateTime)).toList();
         assertEquals(reservationsFromEarliestToLatest, reservations);
+    }
+
+    @Test
+    @DisplayName("Invalid updates return validation errors")
+    @Order(2)
+    public void invalidUpdatesReturnValidationErrors() throws Exception {
+        UpdateReservationRequest invalidRequest = new UpdateReservationRequest(
+                LocalDateTime.now().minusHours(4),
+                0
+        );
+        String invalidRequestJson = objectMapper.writeValueAsString(invalidRequest);
+
+        mockMvc.perform(MockMvcRequestBuilders.patch(RESERVATIONS_URI + "/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequestJson)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.newReservationDateTime").isString())
+                .andExpect(jsonPath("$.newNumberOfGuests").isString());
+    }
+
+    @Test
+    @DisplayName("Can update reservation datetime and number of guests")
+    @Order(3)
+    public void canUpdateReservation() throws Exception {
+        LocalDateTime newReservationDateTime = futureDate.plusHours(4);
+        int newNumberOfGuests = 8;
+        UpdateReservationRequest updateRequest = new UpdateReservationRequest(newReservationDateTime, newNumberOfGuests);
+        String updateRequestJson = objectMapper.writeValueAsString(updateRequest);
+
+        ReservationResponseBody expectedResponse = new ReservationResponseBody(
+                1L,
+                1L,
+                "Customer",
+                "+639170000000",
+                "customer@example.com",
+                CommunicationMethod.EMAIL,
+                newReservationDateTime,
+                newNumberOfGuests,
+                false
+        );
+        String expectedJson = objectMapper.writeValueAsString(expectedResponse);
+        mockMvc.perform(MockMvcRequestBuilders.patch(RESERVATIONS_URI + "/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateRequestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
     }
 
     @Test
