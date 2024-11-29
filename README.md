@@ -2,11 +2,9 @@
 
 ## TODO
 
-- Implement updating
-- Canceling cancelled reservations should 404
+- Write Postman Collection
 - Add more OpenAPI documentation
 - Add Javadoc
-- Write Postman Collection
 - Implement quartz scheduler logic for reminder jobs
 
 ## Design Decisions
@@ -31,7 +29,7 @@
     - These runtime errors are allowed to bubble up to the web layer and handled by returning appropriate HTTP
       responses.
 - Keep domain and web layer separate with DTOs, maintaining strict boundaries via services.
-- Cancelling a reservation soft-deletes it.
+- Cancelling a reservation soft-deletes it. Cancelling cancelled reservations returns 404.
 - No HATEOAS.
 
 ## Assumptions Made
