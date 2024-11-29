@@ -1,5 +1,6 @@
 package zalbia.restaurant.booking.domain;
 
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,14 +63,18 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
 
     @Override
     public Optional<Reservation> updateReservation(
-            Long reservationId,
-            LocalDateTime newReservationDateTime,
-            int newNumberOfGuests
+            @Nullable Long reservationId,
+            @Nullable LocalDateTime newReservationDateTime,
+            Integer newNumberOfGuests
     ) {
         return reservationRepository.findActiveById(reservationId)
                 .map(existingReservation -> {
-                    existingReservation.updateReservationDateTime(newReservationDateTime);
-                    existingReservation.updateNumberOfGuests(newNumberOfGuests);
+                    if (newReservationDateTime != null) {
+                        existingReservation.updateReservationDateTime(newReservationDateTime);
+                    }
+                    if (newNumberOfGuests != null) {
+                        existingReservation.updateNumberOfGuests(newNumberOfGuests);
+                    }
                     reservationRepository.save(existingReservation);
                     return existingReservation;
                 });

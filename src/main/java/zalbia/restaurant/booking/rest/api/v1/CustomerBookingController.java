@@ -112,6 +112,19 @@ public class CustomerBookingController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Reservation updated"),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "Reservation update failed",
+                    content = @Content(
+                            mediaType = MediaType.ALL_VALUE,
+                            schema = @Schema(example = """
+                                    {
+                                      "newReservationDateTime": "must be a future date",
+                                      "newNumberOfGuests": "Number of guests must be at least 1"
+                                    }"""
+                            )
+                    )
+            ),
+            @ApiResponse(
                     responseCode = "404",
                     description = "Reservation not found",
                     content = @Content(

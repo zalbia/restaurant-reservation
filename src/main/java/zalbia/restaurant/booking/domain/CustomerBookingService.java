@@ -13,5 +13,5 @@ public interface CustomerBookingService {
 
     Optional<Reservation> findById(Long reservationId);
 
-    Optional<Reservation> updateReservation(Long reservationId, LocalDateTime localDateTime, int i);
+    Optional<Reservation> updateReservation(Long reservationId, LocalDateTime newReservationDateTime, Integer newNumberOfGuests);
 }
