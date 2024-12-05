@@ -2,6 +2,7 @@ package zalbia.restaurant.booking.domain;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
+import zalbia.restaurant.booking.domain.validation.UpdateReservationDateTimeToNullException;
 import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
 import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
 
@@ -84,7 +85,7 @@ public final class Reservation {
      */
     public void updateReservationDateTime(@NotNull LocalDateTime newReservationDateTime) {
         if (newReservationDateTime == null) {
-            throw new UpdateReservationToPastException(id, newReservationDateTime, "A new reservation date time is required.");
+            throw new UpdateReservationDateTimeToNullException(id, "Can't update reservation " + id + "  datetime to null.");
         }
         if (newReservationDateTime.isBefore(LocalDateTime.now())) {
             throw new UpdateReservationToPastException(id, newReservationDateTime,

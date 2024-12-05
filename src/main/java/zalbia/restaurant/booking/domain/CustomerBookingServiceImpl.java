@@ -76,7 +76,7 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
 
     @Override
     @Transactional
-    public void cancelReservation(Long reservationId) {
+    public void cancelReservation(long reservationId) {
         reservationRepository.findActiveById(reservationId).ifPresentOrElse(reservation -> {
             reservation.cancel();
             reservationRepository.save(reservation);
@@ -88,20 +88,20 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     }
 
     @Override
-    public List<Reservation> getUpcomingReservationsPaginated(Long guestId, int page, int pageSize) {
+    public List<Reservation> getUpcomingReservationsPaginated(long guestId, int page, int pageSize) {
         return reservationRepository.getUpcomingReservationsPaginated(guestId, pageSize, page * pageSize);
     }
 
     @Override
-    public Optional<Reservation> findById(Long reservationId) {
+    public Optional<Reservation> findById(long reservationId) {
         return reservationRepository.findActiveById(reservationId);
     }
 
     @Override
     public Optional<Reservation> updateReservation(
-            @Nullable Long reservationId,
+            @Nullable long reservationId,
             @Nullable LocalDateTime newReservationDateTime,
-            Integer newNumberOfGuests
+            @Nullable Integer newNumberOfGuests
     ) {
         return reservationRepository.findActiveById(reservationId).map(existingReservation -> {
             if (newReservationDateTime != null) {

@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import zalbia.restaurant.booking.domain.validation.MissingReservationException;
-import zalbia.restaurant.booking.domain.validation.ReservationValidationException;
-import zalbia.restaurant.booking.domain.validation.UpdateReservationToPastException;
-import zalbia.restaurant.booking.domain.validation.UpdateToInvalidNumberOfGuestsException;
+import zalbia.restaurant.booking.domain.validation.*;
 
 /**
  * Provides API layer error handling for internal errors in customer booking.
@@ -19,6 +16,11 @@ public class InternalCustomerBookingErrorHandler {
     @ExceptionHandler(ReservationValidationException.class)
     public ResponseEntity<String> handleReservationValidationException(ReservationValidationException ignored) {
         return new ResponseEntity<>(INTERNAL_ERROR_PREFIX + "booking a reservation.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UpdateReservationDateTimeToNullException.class)
+    public ResponseEntity<String> handleUpdateReservationDateTimeToNull(UpdateReservationDateTimeToNullException e) {
+        return new ResponseEntity<>(INTERNAL_ERROR_PREFIX + "updating a reservation's datetime to null.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UpdateReservationToPastException.class)
